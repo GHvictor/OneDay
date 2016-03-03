@@ -1,10 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.android.oneday.activity.MainPageActivity.MainPageActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tab"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/topTab">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="行 程"
+            android:id="@+id/textTopTab"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/text_hint"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_main"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/tab"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/mainLinearLayout" >
+
+        <LinearLayout
+            android:id="@+id/calendarPage"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:onClick="PageOnClick">
+
+            <ImageView
+                android:id="@+id/calendarImage"
+                android:layout_width="wrap_content"
+                android:layout_height="27dp"
+                android:src="@drawable/menu_calendar"
+                android:layout_gravity="center_horizontal" />
+
+            <!--<TextView
+                android:id="@+id/calendarText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="日历"
+                android:textColor="@color/text_hint"
+                android:layout_gravity="center_horizontal" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/schedulePage"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="PageOnClick">
+
+            <ImageView
+                android:id="@+id/scheduleImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu_schedule"
+                android:layout_gravity="center_horizontal" />
+
+            <!--<TextView
+                android:id="@+id/scheduleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="日程"
+                android:textColor="@color/text_hint"
+                android:layout_gravity="center_horizontal" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/weatherPage"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="PageOnClick">
+
+            <ImageView
+                android:id="@+id/weatherImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu_weather"
+                android:layout_gravity="center_horizontal" />
+
+            <!--<TextView
+                android:id="@+id/weatherText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="服务"
+                android:textColor="@color/text_hint"
+                android:layout_gravity="center_horizontal" />-->
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -20,6 +20,12 @@
         </activity>
         <activity android:name=".activity.MainPageActivity.MainPageActivity" >
         </activity>
+        <activity android:name=".activity.MainPageActivity.WeatherPageActivity" >
+        </activity>
+        <activity android:name=".activity.MainPageActivity.SchedulePageActivity" >
+        </activity>
+        <activity android:name=".activity.MainPageActivity.CalendarPageActivity" >
+        </activity>
     </application>
 
 </manifest>
