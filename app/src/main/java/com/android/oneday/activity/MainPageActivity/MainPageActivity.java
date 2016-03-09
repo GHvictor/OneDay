@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +22,7 @@ import java.util.List;
  * Created by Feng on 3/3/2016.
  * TODO finish 30%.
  */
-public class MainPageActivity extends BaseActivity {
+public class MainPageActivity extends BaseActivity implements OnPageChangeListener{
 
     /**
      * Param statement
@@ -29,6 +31,7 @@ public class MainPageActivity extends BaseActivity {
     private TextView textTab = null;
     private LocalActivityManager manager = null;
     private ImageView imgCalender, imgSchedule, imgWeather;
+    private String[] mlistTag = {"one", "two", "three"}; //activity标识
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,66 +39,29 @@ public class MainPageActivity extends BaseActivity {
         setContentView(R.layout.activity_main_page);
         initView();
         //TODO this need when code Calendar finished then test it.
-        //initViewPage();
+        initViewPage();
     }
 
     private void initView() {
+        this.textTab = (TextView) super.findViewById(R.id.textTopTab);
         this.imgCalender = (ImageView) super.findViewById(R.id.calendarImage);
         this.imgSchedule = (ImageView) super.findViewById(R.id.scheduleImage);
         this.imgWeather = (ImageView) super.findViewById(R.id.weatherImage);
     }
 
     private void initViewPage() {
-        List<View> mListViews = new ArrayList<View>();
+        final List<View> mListViews = new ArrayList<View>();
         this.pager = (ViewPager) findViewById(R.id.viewpager_main);
         Intent intent1 = new Intent(MainPageActivity.this, CalendarPageActivity.class); // 加载activity到viewpage
-        mListViews.add(getView("A", intent1));
+        View v1 = getView(mlistTag[0], intent1);
+        mListViews.add(v1);
         Intent intent2 = new Intent(MainPageActivity.this, SchedulePageActivity.class); // 加载activity到viewpage
         mListViews.add(getView("B", intent2));
         Intent intent3 = new Intent(MainPageActivity.this, WeatherPageActivity.class); // 加载activity到viewpage
-        mListViews.add(getView("C", intent3));;
+        mListViews.add(getView("C", intent3));
         this.pager.setAdapter(new MyFramePagerAdapter(mListViews));
         this.pager.setCurrentItem(1);
-        this.pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        pager.setCurrentItem(0);
-                        textTab.setText("日 历");
-                        /*imgCalender.setImageDrawable(getResources().getDrawable(R.drawable.conversation_press));
-                        imgSchedule.setImageDrawable(getResources().getDrawable(R.drawable.contacts_normal));
-                        imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.service_normal));*/
-                        break;
-                    case 1:
-                        pager.setCurrentItem(1);
-                        textTab.setText("日 程");
-                        /*imgCalender.setImageDrawable(getResources().getDrawable(R.drawable.conversation_normal));
-                        imgSchedule.setImageDrawable(getResources().getDrawable(R.drawable.contacts_press));
-                        imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.service_normal));*/
-                        break;
-                    case 2:
-                        pager.setCurrentItem(2);
-                        textTab.setText("天 气");
-                        /*imgCalender.setImageDrawable(getResources().getDrawable(R.drawable.conversation_normal));
-                        imgSchedule.setImageDrawable(getResources().getDrawable(R.drawable.contacts_normal));
-                        imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.service_press));*/
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        this.pager.addOnPageChangeListener(this);
         this.textTab.setText("日 程");
         //this.text2.setTextColor(getResources().getColor(R.color.text_checked));
         //this.image2.setImageDrawable(getResources().getDrawable(R.drawable.contacts_press));
@@ -138,6 +104,45 @@ public class MainPageActivity extends BaseActivity {
      */
     private View getView(String id, Intent intent) {
         return manager.startActivity(id, intent).getDecorView();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                this.pager.setCurrentItem(0);
+                this.textTab.setText("日 历");
+                this.imgCalender.setImageDrawable(getResources().getDrawable(R.drawable.menu_calendar));
+                this.imgSchedule.setImageDrawable(getResources().getDrawable(R.drawable.menu_schedule));
+                this.imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.menu_weather));
+                break;
+            case 1:
+                this.pager.setCurrentItem(1);
+                this.textTab.setText("日 程");
+                this.imgCalender.setImageDrawable(getResources().getDrawable(R.drawable.menu_calendar));
+                this.imgSchedule.setImageDrawable(getResources().getDrawable(R.drawable.menu_schedule));
+                this.imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.menu_weather));
+                break;
+            case 2:
+                this.pager.setCurrentItem(2);
+                this.textTab.setText("天 气");
+                this.imgCalender.setImageDrawable(getResources().getDrawable(R.drawable.menu_calendar));
+                this.imgSchedule.setImageDrawable(getResources().getDrawable(R.drawable.menu_schedule));
+                this.imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.menu_weather));
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     public class MyFramePagerAdapter extends PagerAdapter {
