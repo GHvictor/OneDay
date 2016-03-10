@@ -23,8 +23,10 @@
         <activity android:name=".activity.MainPageActivity.WeatherPageActivity" >
         </activity>
         <activity android:name=".activity.MainPageActivity.SchedulePageActivity" >
+
         </activity>
         <activity android:name=".activity.MainPageActivity.CalendarPageActivity" >
+
         </activity>
     </application>
 

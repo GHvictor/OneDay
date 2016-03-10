@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import java.util.List;
 
 /**
  * Created by Feng on 3/3/2016.
- * TODO finish 30%.
+ * TODO finish 70%.need change img.
  */
 public class MainPageActivity extends BaseActivity implements OnPageChangeListener{
 
@@ -37,9 +38,30 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        initData(savedInstanceState);
         initView();
-        //TODO this need when code Calendar finished then test it.
         initViewPage();
+    }
+
+    @Override
+    protected void onDestroy() {
+        //super.unregisterReceiver(MainPageActivity.this.receiver);
+        super.onDestroy();
+    }
+    protected void onStart(){
+        super.onStart();
+    }
+    protected void onStop(){
+        super.onStop();
+    }
+
+    public void finish() {
+        this.moveTaskToBack(true);
+    }
+
+    private void initData(Bundle savedInstanceState) {
+        this.manager = new LocalActivityManager(this, true);
+        this.manager.dispatchCreate(savedInstanceState);
     }
 
     private void initView() {
@@ -50,16 +72,24 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
     }
 
     private void initViewPage() {
-        final List<View> mListViews = new ArrayList<View>();
+        final List<View> listViews = new ArrayList<View>();
         this.pager = (ViewPager) findViewById(R.id.viewpager_main);
-        Intent intent1 = new Intent(MainPageActivity.this, CalendarPageActivity.class); // 加载activity到viewpage
-        View v1 = getView(mlistTag[0], intent1);
-        mListViews.add(v1);
-        Intent intent2 = new Intent(MainPageActivity.this, SchedulePageActivity.class); // 加载activity到viewpage
-        mListViews.add(getView("B", intent2));
-        Intent intent3 = new Intent(MainPageActivity.this, WeatherPageActivity.class); // 加载activity到viewpage
-        mListViews.add(getView("C", intent3));
-        this.pager.setAdapter(new MyFramePagerAdapter(mListViews));
+        Intent intentCalendar = new Intent(MainPageActivity.this, CalendarPageActivity.class); // 加载activity到viewpage
+        View viewCalendar = getView(mlistTag[0], intentCalendar);
+        if (viewCalendar != null){
+            listViews.add(viewCalendar);
+        }
+        Intent intentSchedule = new Intent(MainPageActivity.this, SchedulePageActivity.class); // 加载activity到viewpage
+        View viewSchedule = getView(mlistTag[1], intentSchedule);
+        if (viewSchedule != null){
+            listViews.add(viewSchedule);
+        }
+        Intent intentWeather = new Intent(MainPageActivity.this, WeatherPageActivity.class); // 加载activity到viewpage
+        View viewWeather = getView(mlistTag[2], intentWeather);
+        if (viewWeather != null){
+            listViews.add(viewWeather);
+        }
+        this.pager.setAdapter(new MainFramePagerAdapter(listViews));
         this.pager.setCurrentItem(1);
         this.pager.addOnPageChangeListener(this);
         this.textTab.setText("日 程");
@@ -95,15 +125,13 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
         }
     }
 
-    private void initData(Bundle savedInstanceState) {
-        //TODO db Wait Coding.
-    }
-
     /**
      * 加载activity
      */
     private View getView(String id, Intent intent) {
-        return manager.startActivity(id, intent).getDecorView();
+        final Window w = manager.startActivity(id, intent);
+        final View view = w != null ? w.getDecorView() : null;
+        return view;
     }
 
     @Override
@@ -145,17 +173,17 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
 
     }
 
-    public class MyFramePagerAdapter extends PagerAdapter {
+    public class MainFramePagerAdapter extends PagerAdapter {
 
-        public List<View> mListViews;
+        public List<View> mainListViews;
 
-        public MyFramePagerAdapter(List<View> mListViews) {
-            this.mListViews = mListViews;
+        public MainFramePagerAdapter(List<View> mListViews) {
+            this.mainListViews = mListViews;
         }
 
         @Override
         public void destroyItem(View arg0, int arg1, Object arg2) {
-            ((ViewPager) arg0).removeView(mListViews.get(arg1));
+            ((ViewPager) arg0).removeView(mainListViews.get(arg1));
         }
 
         @Override
@@ -164,13 +192,13 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
 
         @Override
         public int getCount() {
-            return mListViews.size();
+            return mainListViews.size();
         }
 
         @Override
         public Object instantiateItem(View arg0, int arg1) {
-            ((ViewPager) arg0).addView(mListViews.get(arg1), 0);
-            return mListViews.get(arg1);
+            ((ViewPager) arg0).addView(mainListViews.get(arg1), 0);
+            return mainListViews.get(arg1);
         }
 
         @Override
