@@ -36,7 +36,7 @@ public class CalendarView extends BaseAdapter {
 	private int lastDaysOfMonth = 0;     //上一个月的总天数
 	private Context context;
 	private String[] dayNumber = new String[49];  //一个gridview中的日期存入此数组中
-	private static String week[] = {"日","一","二","三","四","五","六"};
+	//private static String week[] = {"日","一","二","三","四","五","六"};
 	private SpecialCalendar sc = null;
 	private LunarCalendar lc = null;
 	private Resources res = null;
@@ -155,12 +155,6 @@ public class CalendarView extends BaseAdapter {
 		}
 		textView.setText(sp);
 		textView.setTextColor(Color.GRAY);
-		if(position<7){
-			//设置周
-			textView.setTextColor(Color.BLACK);
-			drawable = res.getDrawable(R.drawable.cal_week_top);
-			textView.setBackgroundDrawable(drawable);
-		}
 		
 		if (position < daysOfMonth + dayOfWeek+7 && position >= dayOfWeek+7) {
 			// 当前月信息显示
@@ -202,11 +196,7 @@ public class CalendarView extends BaseAdapter {
 		String lunarDay = "";
 
 		for (int i = 0; i < dayNumber.length; i++) {
-			// 周一
-			if(i<7){
-				dayNumber[i]=week[i]+"."+" ";
-			}
-			else if(i < dayOfWeek+7){  //前一个月
+			if(i < dayOfWeek+7){  //前一个月
 				int temp = lastDaysOfMonth - dayOfWeek+1-7;
 				lunarDay = lc.getLunarDate(year, month-1, temp+i,false);
 				dayNumber[i] = (temp + i)+"."+lunarDay;
