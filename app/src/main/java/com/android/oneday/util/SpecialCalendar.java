@@ -15,6 +15,7 @@ public class SpecialCalendar {
 	 */
 	private static int daysOfMonth = 0;
 	private static int dayOfWeek = 0;
+    private int eachDayOfWeek = 0;
 
 	/**
 	 * Determine it is or not a leap year
@@ -93,6 +94,13 @@ public class SpecialCalendar {
 		result[2] = Integer.parseInt(dateStr.split("-")[2]);
 
 		return result;
+	}
+
+	public int getWeekDayOfLastMonth(int year,int month,int day){
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, month-1, day);
+		eachDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)-1;
+		return eachDayOfWeek;
 	}
 
 }

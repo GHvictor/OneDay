@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.android.oneday.activity.CalendarActivity.CalAddScheduleView">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tab"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/calTopTab">
+        android:id="@+id/calSchTopTab">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/calGotoButton"
+            android:id="@+id/calSchGotoButton"
             android:src="@drawable/cal_goto_button"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -23,7 +25,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/calGotoButton">
+            android:layout_below="@+id/calSchGotoButton">
 
             <TextView
                 android:layout_width="0dp"
@@ -86,8 +88,17 @@
     </RelativeLayout>
 
     <ViewFlipper
-        android:id="@+id/calFlipper"
-        android:layout_below="@+id/calTopTab"
+        android:id="@+id/calSchFlipper"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calSchTopTab" />
+    <TextView
+        android:id="@+id/calSchdate"
+        android:layout_below="@id/calSchFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2016年3月15日"
+        android:gravity="center"
+        />
+
+</RelativeLayout>

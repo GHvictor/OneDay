@@ -24,9 +24,11 @@ import android.widget.ViewFlipper;
 
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
+import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
 import com.android.oneday.activity.CalendarActivity.CalendarView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -140,7 +142,7 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
             }
         });
 
-        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //gridView中的每一个item的点击事件
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
@@ -185,15 +187,15 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
                     scheduleDate.add(scheduleMonth);
                     scheduleDate.add(scheduleDay);
                     scheduleDate.add(week);
-                    scheduleDate.add(scheduleLunarDay);
+                    //scheduleDate.add(scheduleLunarDay);
 
                     Intent intent = new Intent();
                     intent.putStringArrayListExtra("scheduleDate", scheduleDate);
-                    //intent.setClass(CalendarActivity.this, ScheduleView.class);
-                    //startActivity(intent);
+                    intent.setClass(CalendarPageActivity.this, CalAddScheduleView.class);
+                    startActivity(intent);
                 }
             }
-        });*/
+        });
         gridView.setLayoutParams(params);
     }
 
