@@ -28,6 +28,8 @@
         </activity>
         <activity android:name=".activity.CalendarActivity.CalAddScheduleView" >
         </activity>
+        <activity android:name=".activity.ScheduleActivity.ScheduleTypeView" >
+        </activity>
     </application>
 
 </manifest>
