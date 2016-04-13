@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/android/oneday/db/ScheduleModel.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/android/oneday/vo/ScheduleDateTag.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/android/oneday/vo/ScheduleVO.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/push_left_in.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/push_left_out.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/push_right_in.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/push_right_out.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/cal_circle_message.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/cal_schedule_type.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/schedule_bk.png" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

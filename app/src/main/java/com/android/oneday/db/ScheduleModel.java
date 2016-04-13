@@ -25,7 +25,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * ±£´æÈÕ³ÌĞÅÏ¢
+	 * ä¿å­˜æ—¥ç¨‹ä¿¡æ¯
 	 * @param scheduleVO
 	 */
 	public int save(ScheduleVO scheduleVO){
@@ -53,7 +53,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * ²éÑ¯Ä³Ò»ÌõÈÕ³ÌĞÅÏ¢
+	 * æŸ¥è¯¢æŸä¸€æ¡æ—¥ç¨‹ä¿¡æ¯
 	 * @param scheduleID
 	 * @return
 	 */
@@ -76,7 +76,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * ²éÑ¯ËùÓĞµÄÈÕ³ÌĞÅÏ¢
+	 * æŸ¥è¯¢å…¨éƒ¨æ—¥ç¨‹ä¿¡æ¯
 	 * @return
 	 */
 	public ArrayList<ScheduleVO> getAllSchedule(){
@@ -102,7 +102,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * É¾³ıÈÕ³Ì
+	 * åˆ é™¤æ—¥ç¨‹
 	 * @param scheduleID
 	 */
 	public void delete(int scheduleID){
@@ -119,7 +119,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * ¸üĞÂÈÕ³Ì
+	 * æ›´æ–°æ—¥ç¨‹
 	 * @param vo
 	 */
 	public void update(ScheduleVO vo){
@@ -134,7 +134,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * ½«ÈÕ³Ì±êÖ¾ÈÕÆÚ±£´æµ½Êı¾İ¿âÖĞ
+	 * å°†æ—¥ç¨‹æ ‡å¿—æ—¥æœŸä¿å­˜åˆ°æ•°æ®åº“ä¸­
 	 * @param dateTagList
 	 */
 	public void saveTagDate(ArrayList<ScheduleDateTag> dateTagList){
@@ -153,7 +153,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * Ö»²éÑ¯³öµ±Ç°ÔÂµÄÈÕ³ÌÈÕÆÚ
+	 * åªæŸ¥è¯¢å‡ºå½“å‰æœˆçš„æ—¥ç¨‹æ—¥æœŸ
 	 * @param currentYear
 	 * @param currentMonth
 	 * @return
@@ -180,7 +180,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 * µ±µã»÷Ã¿Ò»¸ögridviewÖĞitemÊ±,²éÑ¯³ö´ËÈÕÆÚÉÏËùÓĞµÄÈÕ³Ì±ê¼Ç(scheduleID)
+	 * å½“ç‚¹å‡»æ¯ä¸ªgridviewä¸­çš„itemæ—¶ï¼ŒæŸ¥è¯¢å‡ºæ­¤æ—¥æœŸä¸Šæ‰€æœ‰çš„æ—¥ç¨‹æ ‡è®°ï¼ˆScheduleIDï¼‰
 	 * @param year
 	 * @param month
 	 * @param day
@@ -189,7 +189,7 @@ public class ScheduleModel {
 	public String[] getScheduleByTagDate(int year, int month, int day){
 		ArrayList<ScheduleVO> scheduleList = new ArrayList<ScheduleVO>();
 		SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-		//¸ù¾İÊ±¼ä²éÑ¯³öÈÕ³ÌID£¨scheduleID£©£¬Ò»¸öÈÕÆÚ¿ÉÄÜ¶ÔÓ¦¶à¸öÈÕ³ÌID
+		//ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Õ³ï¿½IDï¿½ï¿½scheduleIDï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½Ü¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Õ³ï¿½ID
 		Cursor cursor = db.query("scheduletagdate", new String[]{"scheduleID"}, "year=? and month=? and day=?", new String[]{String.valueOf(year),String.valueOf(month),String.valueOf(day)}, null, null, null);
 		String scheduleIDs[] = null;
 		scheduleIDs = new String[cursor.getCount()];
@@ -206,7 +206,7 @@ public class ScheduleModel {
 	}
 	
 	/**
-	 *¹Ø±ÕDB
+	 * å…³é—­DB
 	 */
 	public void destoryDB(){
 		if(dbOpenHelper != null){

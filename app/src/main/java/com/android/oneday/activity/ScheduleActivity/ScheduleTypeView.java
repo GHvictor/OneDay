@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AbsListView;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,7 +26,7 @@ public class ScheduleTypeView extends BaseActivity {
     private ScheduleConstant cc = null;
     private int sch_typeID = 0;
     private int remindID = 0;
-    private LinearLayout layout; // 布局 ， 可以在xml布局中获得
+    private LinearLayout layout; // 布局，可以在xml布局中获得
     private LinearLayout layButton;
     private RadioGroup group; // 点选按钮组
     private TextView textTop = null;
@@ -40,7 +40,7 @@ public class ScheduleTypeView extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(AbsListView.LayoutParams.FILL_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
         cc = new ScheduleConstant();
 
@@ -50,7 +50,7 @@ public class ScheduleTypeView extends BaseActivity {
         layout.setLayoutParams(params);
 
         group = new RadioGroup(this);
-        btSave = new TextView(this,null);
+        btSave = new TextView(this, null);
         btCancel = new TextView(this, null);
         textTop = new TextView(this, null);
         textTop.setTextColor(Color.BLACK);
@@ -66,7 +66,8 @@ public class ScheduleTypeView extends BaseActivity {
             sch_typeID = sch_remind[0];
             remindID = sch_remind[1];
         }
-        for(int i = 0 ; i < cc.sch_type.length ; i++){
+        radio = new RadioButton(this);
+        for(int i = 0; i < cc.sch_type.length; i++){
             radio = new RadioButton(this);
             if(i == sch_typeID){
                 radio.setChecked(true);
@@ -92,7 +93,7 @@ public class ScheduleTypeView extends BaseActivity {
         btCancel.setTextColor(Color.BLACK);
         btCancel.setBackgroundResource(R.drawable.cal_top_day);
         btCancel.setText("取消");
-        btCancel.setHeight(45);
+        btCancel.setHeight(47);
         btCancel.setWidth(160);
         btCancel.setGravity(Gravity.CENTER);
         btCancel.setClickable(true);
@@ -106,7 +107,6 @@ public class ScheduleTypeView extends BaseActivity {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 schType_temp = checkedId;
 
                 new AlertDialog.Builder(ScheduleTypeView.this).setTitle("日程类型")
@@ -132,8 +132,9 @@ public class ScheduleTypeView extends BaseActivity {
                 remindID = remind_temp;
                 Intent intent = new Intent();
                 intent.setClass(ScheduleTypeView.this, CalAddScheduleView.class);
-                intent.putExtra("schType_remind", new int[]{sch_typeID,remindID});
+                intent.putExtra("schType_remind", new int[]{sch_typeID, remindID});
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -145,8 +146,9 @@ public class ScheduleTypeView extends BaseActivity {
 
                 Intent intent = new Intent();
                 intent.setClass(ScheduleTypeView.this, CalAddScheduleView.class);
-                intent.putExtra("schType_remind", new int[]{sch_typeID,remindID});
+                intent.putExtra("schType_remind", new int[]{sch_typeID, remindID});
                 startActivity(intent);
+                finish();
             }
         });
     }

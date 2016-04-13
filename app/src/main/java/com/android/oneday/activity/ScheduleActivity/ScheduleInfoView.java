@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
+import com.android.oneday.activity.MainPageActivity.MainPageActivity;
+import com.android.oneday.activity.MainPageActivity.SchedulePageActivity;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
 import com.android.oneday.vo.ScheduleVO;
@@ -30,7 +32,7 @@ public class ScheduleInfoView extends BaseActivity {
     private TextView date = null;
     private TextView type = null;
     private EditText editInfo = null;
-    private ScheduleModel dao = null;
+    private ScheduleModel model = null;
     private ScheduleVO scheduleVO = null;
 
     private String scheduleInfo = "";    //日程信息被修改前的内容
@@ -42,7 +44,7 @@ public class ScheduleInfoView extends BaseActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
 
-        dao = new ScheduleModel(this);
+        model = new ScheduleModel(this);
 
         //final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 5, 0, 0);
@@ -142,12 +144,10 @@ public class ScheduleInfoView extends BaseActivity {
         layout.addView(info);
 		/*Intent intent = getIntent();
 		int scheduleID = Integer.parseInt(intent.getStringExtra("scheduleID"));*/
-        scheduleVO = dao.getScheduleByID(scheduleID);
+        scheduleVO = model.getScheduleByID(scheduleID);
         date.setText(scheduleVO.getScheduleDate());
         type.setText(ScheduleConstant.sch_type[scheduleVO.getScheduleTypeID()]);
         info.setText(scheduleVO.getScheduleContent());
-
-
 
         //长时间按住日程类型textview就提示是否删除日程信息
         type.setOnLongClickListener(new View.OnLongClickListener() {
@@ -162,10 +162,10 @@ public class ScheduleInfoView extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        dao.delete(Integer.parseInt(scheduleID));
-                        Intent intent1 = new Intent();
-                        //intent1.setClass(ScheduleInfoView.this, ScheduleAll.class);
-                        startActivity(intent1);
+                        model.delete(Integer.parseInt(scheduleID));
+                        Intent intentToMain = new Intent();
+                        intentToMain.setClass(ScheduleInfoView.this, MainPageActivity.class);
+                        startActivity(intentToMain);
                     }
                 }).setNegativeButton("取消", null).show();
 

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -28,7 +26,7 @@ import android.widget.ViewFlipper;
 
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
-import com.android.oneday.activity.MainPageActivity.CalendarPageActivity;
+import com.android.oneday.activity.MainPageActivity.SchedulePageActivity;
 import com.android.oneday.activity.ScheduleActivity.ScheduleInfoView;
 import com.android.oneday.activity.ScheduleActivity.ScheduleTypeView;
 import com.android.oneday.adapter.DateAdapter;
@@ -103,6 +101,40 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private static String schText = "";
     int schTypeID = 0;
 
+    public CalAddScheduleView() {
+        lc = new LunarCalendar();
+        model = new ScheduleModel(this);
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        currentDate = sdf.format(date);
+        year_c = Integer.parseInt(currentDate.split("-")[0]);
+        month_c = Integer.parseInt(currentDate.split("-")[1]);
+        day_c = Integer.parseInt(currentDate.split("-")[2]);
+        currentYear = year_c;
+        currentMonth = month_c;
+        currentDay = day_c;
+        sc = new SpecialCalendar();
+        getCalendar(year_c, month_c);
+        week_num = getWeeksOfMonth();
+        currentNum = week_num;
+        if (dayOfWeek == 7) {
+            week_c = day_c / 7 + 1;
+        } else {
+            if (day_c <= (7 - dayOfWeek)) {
+                week_c = 1;
+            } else {
+                if ((day_c - (7 - dayOfWeek)) % 7 == 0) {
+                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 1;
+                } else {
+                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 2;
+                }
+            }
+        }
+        currentWeek = week_c;
+        getCurrent();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +154,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
         flipper1.addView(gridView, 0);
 
         returnCalendar = (ImageView) findViewById(R.id.calSchReturnButton);
-        //scheduleTop = (TextView) findViewById(R.id.scheduleTop);
         scheduleType = (TextView) findViewById(R.id.calScheduleType);
         scheduleSave = (TextView) findViewById(R.id.save);
         scheduleType.setBackgroundColor(Color.WHITE);
@@ -137,7 +168,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
             //一旦设置完成之后就应该将此静态变量设置为空，
             schText = "";
         }
-
 
         Date date = new Date();
         if (hour == -1 && minute == -1) {
@@ -155,7 +185,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
 
         //获得日程类型
         scheduleType.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 schText = scheduleText.getText().toString();
@@ -163,6 +192,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
                 intent.setClass(CalAddScheduleView.this, ScheduleTypeView.class);
                 intent.putExtra("sch_remind", new int[]{sch_typeID, remindID});
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -201,6 +231,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
                     schedulevo.setRemindID(remindID);
                     schedulevo.setScheduleDate(showDate);
                     schedulevo.setScheduleContent(scheduleText.getText().toString());
+                    //Smodel.save(schedulevo);
                     int scheduleID = model.save(schedulevo);
                     //将scheduleID保存到数据中(因为在CalendarActivity中点击gridView中的一个Item可能会对应多个标记日程(scheduleID))
                     String[] scheduleIDs = new String[]{String.valueOf(scheduleID)};
@@ -402,39 +433,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
             lunarDay = "初一";
         }
         return lunarDay;
-    }
-
-    public CalAddScheduleView() {
-        lc = new LunarCalendar();
-
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-        currentDate = sdf.format(date);
-        year_c = Integer.parseInt(currentDate.split("-")[0]);
-        month_c = Integer.parseInt(currentDate.split("-")[1]);
-        day_c = Integer.parseInt(currentDate.split("-")[2]);
-        currentYear = year_c;
-        currentMonth = month_c;
-        currentDay = day_c;
-        sc = new SpecialCalendar();
-        getCalendar(year_c, month_c);
-        week_num = getWeeksOfMonth();
-        currentNum = week_num;
-        if (dayOfWeek == 7) {
-            week_c = day_c / 7 + 1;
-        } else {
-            if (day_c <= (7 - dayOfWeek)) {
-                week_c = 1;
-            } else {
-                if ((day_c - (7 - dayOfWeek)) % 7 == 0) {
-                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 1;
-                } else {
-                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 2;
-                }
-            }
-        }
-        currentWeek = week_c;
-        getCurrent();
     }
 
     /**
