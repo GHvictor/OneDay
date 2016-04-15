@@ -99,7 +99,7 @@ public class ScheduleInfoView extends BaseActivity {
         switch (item.getItemId()) {
             case Menu.FIRST:
                 Intent intent = new Intent();
-                //intent.setClass(ScheduleInfoView.this, ScheduleAll.class);
+                intent.setClass(ScheduleInfoView.this, MainPageActivity.class);
                 startActivity(intent);
                 break;
             case Menu.FIRST+1:

@@ -49,8 +49,7 @@ public class SchedulePageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-
-
+        super.setContentView(R.layout.activity_schedule_page);
         model = new ScheduleModel(this);
 
         initView();

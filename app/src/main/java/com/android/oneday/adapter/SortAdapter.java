@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.oneday.R;
+import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.vo.ScheduleVO;
 
 import java.util.ArrayList;
@@ -53,42 +54,23 @@ public class SortAdapter extends BaseAdapter{
 
     public View getView(final int position, View view, ViewGroup arg2) {
         ViewHolder viewHolder = null;
+        ScheduleConstant scheduleConstant = new ScheduleConstant();
         final ScheduleVO mContent = list.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.schedule_one_list, null);
             viewHolder.schOneType = (TextView) view.findViewById(R.id.schOneType);
             viewHolder.schOneDate = (TextView) view.findViewById(R.id.schOneDate);
-            viewHolder.schOneRemind = (TextView) view.findViewById(R.id.schOneRemind);
+            //viewHolder.schOneRemind = (TextView) view.findViewById(R.id.schOneRemind);
             viewHolder.schOneContent = (TextView) view.findViewById(R.id.schOneContent);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        /*// 根据position获取分类的首字母的Char ascii值
-        int section = getSectionForPosition(position);
-
-        // 如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现
-        if (position == getPositionForSection(section)) {
-            viewHolder.tvLetter.setVisibility(View.VISIBLE);
-            viewHolder.tvLetter.setText(mContent.getSortLetters());
-        } else {
-            viewHolder.tvLetter.setVisibility(View.GONE);
-        }
-
-        viewHolder.tvUserName.setText(list.get(position).getScheduleDate());
-        Bitmap photo = null;
-        try {
-            photo = this.list.get(position).getPortrait();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Drawable drawable = new BitmapDrawable(view.getResources(),photo);
-        viewHolder.ivUserPhoto.setImageDrawable(drawable);*/
-        viewHolder.schOneType.setText(list.get(position).getScheduleTypeID());
+        viewHolder.schOneType.setText(scheduleConstant.sch_type[list.get(position).getScheduleTypeID()]);
         viewHolder.schOneDate.setText(list.get(position).getScheduleDate());
-        viewHolder.schOneRemind.setText(list.get(position).getRemindID());
+        //viewHolder.schOneRemind.setText(scheduleConstant.remind[list.get(position).getRemindID()]);
         viewHolder.schOneContent.setText(list.get(position).getScheduleContent());
 
         return view;
