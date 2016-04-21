@@ -106,6 +106,16 @@ public class DateAdapter extends BaseAdapter{
         return clickTemp;
     }
 
+    public int getChoosePosition(int cs_year, int cs_month, int cs_day) {
+        int chooseWeek = sc.getWeekDayOfLastMonth(cs_year, cs_month, cs_day);
+        if (chooseWeek == 7) {
+            clickTemp = 0;
+        } else {
+            clickTemp = chooseWeek;
+        }
+        return clickTemp;
+    }
+
     public int getCurrentMonth(int position) {
         int thisDayOfWeek = sc.getWeekdayOfMonth(Integer.parseInt(currentYear),
                 Integer.parseInt(currentMonth));

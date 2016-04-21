@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/calSchTopTab" />
     <TextView
-        android:id="@+id/calSchdate"
+        android:id="@+id/schdate"
         android:layout_below="@id/calSchFlipper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -74,6 +74,30 @@ public class ScheduleModel {
 		return null;
 		
 	}
+
+    /**
+     * 按日期查询日程信息
+     * @return
+     */
+    public ArrayList<ScheduleVO> getScheduleByDate(String scheduleDate){
+        ArrayList<ScheduleVO> list = new ArrayList<ScheduleVO>();
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        Cursor cursor = db.query("schedule", new String[]{"scheduleID","scheduleTypeID","remindID","scheduleContent","scheduleDate"}, "scheduleDate"+" LIKE?", new String[]{"%"+scheduleDate+"%"}, null, null, null);
+        while(cursor.moveToNext()){
+            int scheduleID = cursor.getInt(cursor.getColumnIndex("scheduleID"));
+            int scheduleTypeID = cursor.getInt(cursor.getColumnIndex("scheduleTypeID"));
+            int remindID = cursor.getInt(cursor.getColumnIndex("remindID"));
+            String scheduleContent = cursor.getString(cursor.getColumnIndex("scheduleContent"));
+            String schDate = cursor.getString(cursor.getColumnIndex("scheduleDate"));
+            ScheduleVO vo = new ScheduleVO(scheduleID, scheduleTypeID, remindID, scheduleContent, schDate);
+            list.add(vo);
+        }
+        cursor.close();
+        if(list != null && list.size() > 0){
+            return list;
+        }
+        return null;
+    }
 	
 	/**
 	 * 查询全部日程信息

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.android.oneday.R;
@@ -77,14 +78,13 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private ScheduleModel model = null;
     private TextView scheduleType = null;
     private TextView dateText = null;
-    private TextView scheduleTop = null;
     private EditText scheduleText = null;
     private TextView scheduleSave = null;  //保存按钮图片
     private static int hour = -1;
     private static int minute = -1;
     private static ArrayList<String> scheduleDate = null;
     private ArrayList<ScheduleDateTag> dateTagList = new ArrayList<ScheduleDateTag>();
-    private String scheduleYear = "";
+    private String  scheduleYear = "";
     private String scheduleMonth = "";
     private String scheduleDay = "";
     private String week = "";
@@ -101,46 +101,22 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private static String schText = "";
     int schTypeID = 0;
 
-    public CalAddScheduleView() {
-        lc = new LunarCalendar();
-        model = new ScheduleModel(this);
-
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-        currentDate = sdf.format(date);
-        year_c = Integer.parseInt(currentDate.split("-")[0]);
-        month_c = Integer.parseInt(currentDate.split("-")[1]);
-        day_c = Integer.parseInt(currentDate.split("-")[2]);
-        currentYear = year_c;
-        currentMonth = month_c;
-        currentDay = day_c;
-        sc = new SpecialCalendar();
-        getCalendar(year_c, month_c);
-        week_num = getWeeksOfMonth();
-        currentNum = week_num;
-        if (dayOfWeek == 7) {
-            week_c = day_c / 7 + 1;
-        } else {
-            if (day_c <= (7 - dayOfWeek)) {
-                week_c = 1;
-            } else {
-                if ((day_c - (7 - dayOfWeek)) % 7 == 0) {
-                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 1;
-                } else {
-                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 2;
-                }
-            }
-        }
-        currentWeek = week_c;
-        getCurrent();
-    }
-
+    //onCreate方法
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal_add_schedule_view);
         tvDate = (TextView) findViewById(R.id.calSchdate);
+        getScheduleDate();
+        year_c = Integer.parseInt(scheduleYear);
+        month_c = Integer.parseInt(scheduleMonth);
+        day_c = Integer.parseInt(scheduleDay);
+        currentYear = year_c;
+        currentMonth = month_c;
+        currentDay = day_c;
         tvDate.setText(year_c + "年" + month_c + "月" + day_c + "日");
+        getCurrent();
+        Toast.makeText(this, currentYear + "-" + currentMonth + "-" + currentDay + "/" + currentWeek + "-" + currentNum, Toast.LENGTH_LONG).show();
         gestureDetector = new GestureDetector(this);
         flipper1 = (ViewFlipper) findViewById(R.id.calSchFlipper);
         dateAdapter = new DateAdapter(this, getResources(), currentYear,
@@ -149,7 +125,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
         addGridView();
         dayNumbers = dateAdapter.getDayNumbers();
         gridView.setAdapter(dateAdapter);
-        selectPostion = dateAdapter.getTodayPosition();
+        selectPostion = dateAdapter.getChoosePosition(year_c, month_c, day_c);
         gridView.setSelection(selectPostion);
         flipper1.addView(gridView, 0);
 
@@ -247,6 +223,39 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
             }
         });
 
+    }
+
+    public CalAddScheduleView() {
+        lc = new LunarCalendar();
+        model = new ScheduleModel(this);
+
+        /*Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+        currentDate = sdf.format(date);
+        year_c = Integer.parseInt(currentDate.split("-")[0]);
+        month_c = Integer.parseInt(currentDate.split("-")[1]);
+        day_c = Integer.parseInt(currentDate.split("-")[2]);*/
+        currentYear = year_c;
+        currentMonth = month_c;
+        currentDay = day_c;
+        sc = new SpecialCalendar();
+        getCalendar(year_c, month_c);
+        week_num = getWeeksOfMonth();
+        currentNum = week_num;
+        if (dayOfWeek == 7) {
+            week_c = day_c / 7 + 1;
+        } else {
+            if (day_c <= (7 - dayOfWeek)) {
+                week_c = 1;
+            } else {
+                if ((day_c - (7 - dayOfWeek)) % 7 == 0) {
+                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 1;
+                } else {
+                    week_c = (day_c - (7 - dayOfWeek)) / 7 + 2;
+                }
+            }
+        }
+        currentWeek = week_c;
     }
 
     /**
@@ -371,8 +380,9 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
      * @return
      */
     public String getScheduleDate() {
+
         Intent intent = getIntent();
-        // intent.getp
+
         if (intent.getStringArrayListExtra("scheduleDate") != null) {
             //从CalendarActivity中传来的值（包含年与日信息）
             scheduleDate = intent.getStringArrayListExtra("scheduleDate");
