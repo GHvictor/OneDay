@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
+import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
 import com.android.oneday.activity.MainPageActivity.MainPageActivity;
 import com.android.oneday.activity.MainPageActivity.SchedulePageActivity;
 import com.android.oneday.constant.ScheduleConstant;
@@ -32,6 +33,9 @@ public class ScheduleInfoView extends BaseActivity {
     private TextView date = null;
     private TextView type = null;
     private EditText editInfo = null;
+    private LinearLayout layButton;
+    private TextView btSave = null;
+    private TextView btCancel = null;
     private ScheduleModel model = null;
     private ScheduleVO scheduleVO = null;
 
@@ -45,8 +49,9 @@ public class ScheduleInfoView extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         model = new ScheduleModel(this);
+        btSave = new TextView(this, null);
+        btCancel = new TextView(this, null);
 
-        //final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 5, 0, 0);
         layout = new LinearLayout(this); // 实例化布局对象
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -80,8 +85,57 @@ public class ScheduleInfoView extends BaseActivity {
         for(int i = 0; i< scheduleIDs.length; i++){
             handlerInfo(Integer.parseInt(scheduleIDs[i]));
         }
+
+        layButton = new LinearLayout(this);
+        layButton.setOrientation(LinearLayout.HORIZONTAL);
+        //layButton.setBackgroundResource(R.drawable.schedule_bk);
+        layButton.setLayoutParams(params);
+        btSave.setTextColor(Color.BLACK);
+        btSave.setBackgroundResource(R.drawable.cal_top_day);
+        btSave.setText("确定");
+        btSave.setHeight(47);
+        btSave.setWidth(160);
+        btSave.setGravity(Gravity.CENTER);
+        btSave.setClickable(true);
+        btCancel.setTextColor(Color.BLACK);
+        btCancel.setBackgroundResource(R.drawable.cal_top_day);
+        btCancel.setText("取消");
+        btCancel.setHeight(47);
+        btCancel.setWidth(160);
+        btCancel.setGravity(Gravity.CENTER);
+        btCancel.setClickable(true);
+        layButton.addView(btSave);
+        layButton.addView(btCancel);
+        layout.addView(layButton);
         setContentView(layout);
 
+        //触发确定按钮
+        btSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+                intent.setClass(ScheduleInfoView.this, MainPageActivity.class);
+                //intent.putExtra("schType_remind", new int[]{sch_typeID, remindID});
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        //触发取消按钮
+        btCancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+                intent.setClass(ScheduleInfoView.this, CalAddScheduleView.class);
+                //intent.putExtra("schType_remind", new int[]{sch_typeID, remindID});
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 

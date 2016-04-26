@@ -157,7 +157,7 @@ public class LunarCalendar {
 	 * dayCyl5:与1900年1月31日相差的天数,再加40 ?
 	 *
 	 * isday: 这个参数为false---日期为节假日时，阴历日期就返回节假日 ，true---不管日期是否为节假日依然返回这天对应的阴历日期
-	 * @param cal
+	 * @param
 	 * @return
 	 */
 	public String getLunarDate(int year_log, int month_log, int day_log, boolean isday) {

@@ -78,6 +78,13 @@ public class SpecialCalendar {
 		return dayOfWeek;
 	}
 
+    public int getWeekDayOfLastMonth(int year, int month, int day){
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month-1, day);
+        eachDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)-1;
+        return eachDayOfWeek;
+    }
+
 	/**
 	 * Get the current year and month
 	 * @return 返回日期数组，整形array[0]，为年份，array[1]为月份, array[2]为日期
@@ -96,11 +103,48 @@ public class SpecialCalendar {
 		return result;
 	}
 
-	public int getWeekDayOfLastMonth(int year,int month,int day){
-		Calendar cal = Calendar.getInstance();
-		cal.set(year, month-1, day);
-		eachDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)-1;
-		return eachDayOfWeek;
-	}
+    /**
+     * 判断某年某月所有的星期数
+     *
+     * @param year
+     * @param month
+     */
+    public int getWeeksOfMonth(int year, int month) {
+        // 先判断某月的第一天为星期几
+        int weeksOfMonth = 0;
+        int preMonthRelax = 0;
+        int dayFirst = getWeekdayOfMonth(year, month);
+        int days = getDaysOfMonth(isLeapYear(year), month);
+
+        if (dayFirst != 7) {
+            preMonthRelax = dayFirst;
+        }
+        if ((days + preMonthRelax) % 7 == 0) {
+            weeksOfMonth = (days + preMonthRelax) / 7;
+        } else {
+            weeksOfMonth = (days + preMonthRelax) / 7 + 1;
+        }
+        return weeksOfMonth;
+    }
+
+    public int getWeekOfMonth(int day, int dayOfWeek){
+        int currentWeek = 0;
+
+        if (dayOfWeek == 7) {
+            currentWeek = day / 7 + 1;
+        } else {
+            if (day <= (7 - dayOfWeek)) {
+                currentWeek = 1;
+            } else {
+                if ((day - (7 - dayOfWeek)) % 7 == 0) {
+                    currentWeek = (day - (7 - dayOfWeek)) / 7 + 1;
+                } else {
+                    currentWeek = (day - (7 - dayOfWeek)) / 7 + 2;
+                }
+            }
+        }
+        return currentWeek;
+    }
+
 
 }

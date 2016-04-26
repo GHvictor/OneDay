@@ -33,7 +33,6 @@ import java.util.Date;
 
 /**
  * Created by Feng on 3/3/2016.
- * TODO FINISH 30%. Add CalTopMenu, onclick and DB.
  */
 public class CalendarPageActivity extends BaseActivity implements OnGestureListener {
 

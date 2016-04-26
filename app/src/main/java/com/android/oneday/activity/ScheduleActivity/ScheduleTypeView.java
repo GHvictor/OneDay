@@ -146,7 +146,7 @@ public class ScheduleTypeView extends BaseActivity {
 
                 Intent intent = new Intent();
                 intent.setClass(ScheduleTypeView.this, CalAddScheduleView.class);
-                intent.putExtra("schType_remind", new int[]{sch_typeID, remindID});
+                //intent.putExtra("schType_remind", new int[]{sch_typeID, remindID});
                 startActivity(intent);
                 finish();
             }

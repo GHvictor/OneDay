@@ -13,7 +13,6 @@ public class ScheduleDateTag {
 	private int day;
 	private int scheduleID;
 	
-	
 	public ScheduleDateTag() {
 		
 	}
