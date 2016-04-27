@@ -47,7 +47,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
 
     private ViewFlipper topFlipper = null;
     private GridView gridView = null;
-    private TextView tvDate;
+    private TextView calDate;
     private ImageView returnCalendar = null;
     private GestureDetector gestureDetector = null;
     private TextView scheduleType = null;
@@ -85,8 +85,8 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private String scheduleDay = "";
     private String week = "";
     //临时日期时间变量，
-    private String tempMonth;
-    private String tempDay;
+    /*private String tempMonth;
+    private String tempDay;*/
     private static String[] sch_type = ScheduleConstant.sch_type;
     private static String[] remind = ScheduleConstant.remind;
     private int sch_typeID = 0;   //日程类型
@@ -95,6 +95,11 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*year_c = Integer.parseInt(scheduleYear);
+        month_c = Integer.parseInt(scheduleMonth);
+        day_c = Integer.parseInt(scheduleDay);*/
+        //weeksOfMonth = getWeeksOfMonth();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal_add_schedule_view);
 
@@ -104,10 +109,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
         lc = new LunarCalendar();
         sc = new SpecialCalendar();
         getScheduleDate();
-        /*year_c = Integer.parseInt(scheduleYear);
-        month_c = Integer.parseInt(scheduleMonth);
-        day_c = Integer.parseInt(scheduleDay);*/
-        //weeksOfMonth = getWeeksOfMonth();
+
         currentYear = Integer.parseInt(scheduleYear);
         currentMonth = Integer.parseInt(scheduleMonth);
         currentDay = Integer.parseInt(scheduleDay);
@@ -115,9 +117,9 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
         getCalendar(currentYear, currentMonth);
         getCurrent();
 
-        tvDate.setText(currentYear + "年" + currentMonth + "月" + currentDay + "日");
+        calDate.setText(currentYear + "年" + currentMonth + "月" + currentDay + "日");
 
-        Toast.makeText(this, currentYear + "-" + currentMonth + "-" + currentDay + "/" + currentWeek + "-" + weeksOfMonth, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, currentYear + "-" + currentMonth + "-" + currentDay + "/" + currentWeek + "-" + weeksOfMonth, Toast.LENGTH_LONG).show();
         gestureDetector = new GestureDetector(this);
 
         dateAdapter = new DateAdapter(this, getResources(), currentYear,
@@ -130,12 +132,8 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
         gridView.setSelection(selectPostion);
         topFlipper.addView(gridView, 0);
 
-        scheduleType.setBackgroundColor(Color.WHITE);
         scheduleType.setText(sch_type[0] + "\t\t\t\t" + remind[remindID]);
 
-
-
-        scheduleText.setBackgroundColor(Color.WHITE);
         if (schText != null) {
             //在选择日程类型之前已经输入了日程的信息，则在跳转到选择日程类型之前应当将日程信息保存到schText中，当返回时再次可以取得。
             scheduleText.setText(schText);
@@ -148,7 +146,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
             minute = date.getMinutes();
         }
 
-        dateText.setBackgroundColor(Color.WHITE);
         dateText.setText(getScheduleDate());
 
         returnCalendar.setOnClickListener(new OnClickListener() {
@@ -200,7 +197,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
                     new AlertDialog.Builder(CalAddScheduleView.this).setTitle("输入日程").setMessage("日程信息不能为空").setPositiveButton("确认", null).show();
                 } else {
                     //将日程信息保存
-                    String showDate = handleInfo(Integer.parseInt(scheduleYear), Integer.parseInt(tempMonth), Integer.parseInt(tempDay), hour, minute, week, remindID);
+                    String showDate = handleInfo(Integer.parseInt(scheduleYear), Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay), hour, minute, week, remindID);
                     ScheduleVO schedulevo = new ScheduleVO();
                     schedulevo.setScheduleTypeID(sch_typeID);
                     schedulevo.setRemindID(remindID);
@@ -217,7 +214,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
                     startActivity(intent);
 
                     //设置日程标记日期(将所有日程标记日期封装到list中)
-                    setScheduleDateTag(remindID, scheduleYear, tempMonth, tempDay, scheduleID);
+                    setScheduleDateTag(remindID, scheduleYear, scheduleMonth, scheduleDay, scheduleID);
                     finish();
                 }
             }
@@ -226,7 +223,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     }
 
     public void initView(){
-        tvDate = (TextView) findViewById(R.id.calSchdate);
+        calDate = (TextView) findViewById(R.id.calSchdate);
         topFlipper = (ViewFlipper) findViewById(R.id.calSchFlipper);
         returnCalendar = (ImageView) findViewById(R.id.calSchReturnButton);
         scheduleType = (TextView) findViewById(R.id.calScheduleType);
@@ -335,7 +332,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     public String handleInfo(int year, int month, int day, int hour, int minute, String week, int remindID) {
         String remindType = remind[remindID];     //提醒类型
         String show = "";
-        if (1 <= remindID && remindID <= 4) {
+        if (0 <= remindID && remindID <= 4) {
             //提醒一次,隔10分钟,隔30分钟,隔一小时
             show = year + "-" + month + "-" + day + "\t" + hour + ":" + minute + "\t" + week + "\t\t" + remindType;
         } else if (remindID == 5) {
@@ -359,49 +356,10 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     public String getScheduleDate() {
 
         Intent intent = getIntent();
-        String reString = null;
 
         if (intent.getStringArrayListExtra("scheduleDate") != null) {
             //从CalendarActivity中传来的值（包含年与日信息）
             scheduleDate = intent.getStringArrayListExtra("scheduleDate");
-
-            // 得到年月日和星期
-            scheduleYear = scheduleDate.get(0);
-            scheduleMonth = scheduleDate.get(1);
-            scheduleDay = scheduleDate.get(2);
-            week = scheduleDate.get(3);
-
-            tempMonth = scheduleMonth;
-            tempDay = scheduleDay;
-
-            if (Integer.parseInt(scheduleMonth) < 10) {
-                scheduleMonth = "0" + scheduleMonth;
-            }
-
-            if (Integer.parseInt(scheduleDay) < 10) {
-                scheduleDay = "0" + scheduleDay;
-            }
-
-            String hour_c = String.valueOf(hour);
-            String minute_c = String.valueOf(minute);
-            if (hour < 10) {
-                hour_c = "0" + hour_c;
-            }
-            if (minute < 10) {
-                minute_c = "0" + minute_c;
-            }
-            // 得到对应的阴历日期
-            String scheduleLunarDay = getLunarDay(Integer.parseInt(scheduleYear),
-                    Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
-            String scheduleLunarMonth = lc.getLunarMonth(); // 得到阴历的月份
-            StringBuffer scheduleDateStr = new StringBuffer();
-            scheduleDateStr.append(scheduleYear).append("-").append(scheduleMonth)
-                    .append("-").append(scheduleDay).append(" ").append(hour_c).append(":").append(minute_c).append("\n").append(
-                    scheduleLunarMonth).append(scheduleLunarDay)
-                    .append(" ").append(week);
-            // dateText.setText(scheduleDateStr);
-            reString = scheduleDateStr.toString();
-            return reString;
         }
         int[] schType_remind = intent.getIntArrayExtra("schType_remind");  //从ScheduleTypeView中传来的值(包含日程类型和提醒次数信息)
 
@@ -410,7 +368,39 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
             remindID = schType_remind[1];
             scheduleType.setText(sch_type[sch_typeID] + "\t\t\t\t" + remind[remindID]);
         }
-        return reString;
+
+        // 得到年月日和星期
+        scheduleYear = scheduleDate.get(0);
+        scheduleMonth = scheduleDate.get(1);
+        scheduleDay = scheduleDate.get(2);
+        week = scheduleDate.get(3);
+
+        if (Integer.parseInt(scheduleMonth) < 10) {
+            scheduleMonth = "0" + scheduleMonth;
+        }
+
+        if (Integer.parseInt(scheduleDay) < 10) {
+            scheduleDay = "0" + scheduleDay;
+        }
+
+        String hour_c = String.valueOf(hour);
+        String minute_c = String.valueOf(minute);
+        if (hour < 10) {
+            hour_c = "0" + hour_c;
+        }
+        if (minute < 10) {
+            minute_c = "0" + minute_c;
+        }
+        // 得到对应的阴历日期
+        String scheduleLunarDay = getLunarDay(Integer.parseInt(scheduleYear),
+                Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
+        String scheduleLunarMonth = lc.getLunarMonth(); // 得到阴历的月份
+        StringBuffer scheduleDateStr = new StringBuffer();
+        scheduleDateStr.append(scheduleYear).append("-").append(scheduleMonth)
+                .append("-").append(scheduleDay).append(" ").append(hour_c).append(":").append(minute_c).append("\n").append(
+                scheduleLunarMonth).append(scheduleLunarDay)
+                .append(" ").append(week);
+        return scheduleDateStr.toString();
     }
 
     /**
@@ -440,10 +430,10 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     }
 
     public void getCalendar(int year, int month) {
-        isLeapyear = sc.isLeapYear(year); // 是否为闰年
-        daysOfMonth = sc.getDaysOfMonth(isLeapyear, month); // 某月的总天数
-        dayOfWeek = sc.getWeekdayOfMonth(year, month); // 某月第一天为星期几
-        weeksOfMonth = sc.getWeeksOfMonth(year, month); //该月共有多少周
+        isLeapyear = sc.isLeapYear(year);                    // 是否为闰年
+        daysOfMonth = sc.getDaysOfMonth(isLeapyear, month);  // 某月的总天数
+        dayOfWeek = sc.getWeekdayOfMonth(year, month);       // 某月第一天为星期几
+        weeksOfMonth = sc.getWeeksOfMonth(year, month);      //该月共有多少周
         currentWeek = sc.getWeekOfMonth(currentDay, dayOfWeek);
     }
 
@@ -495,6 +485,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
         gridView.setVerticalSpacing(1);
         gridView.setHorizontalSpacing(1);
         gridView.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return CalAddScheduleView.this.gestureDetector.onTouchEvent(event);
@@ -509,12 +500,66 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
                 selectPostion = position;
                 dateAdapter.setSeclection(position);
                 dateAdapter.notifyDataSetChanged();
-                tvDate.setText(dateAdapter.getCurrentYear(selectPostion) + "年"
+                calDate.setText(dateAdapter.getCurrentYear(selectPostion) + "年"
                         + dateAdapter.getCurrentMonth(selectPostion) + "月"
                         + dayNumbers[position] + "日");
             }
         });
         gridView.setLayoutParams(params);
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                           float velocityY) {
+        int gvFlag = 0;
+        if (e1.getX() - e2.getX() > 80) {
+            // 向左滑
+            addGridView();
+            currentWeek++;
+            getCurrent();
+            dateAdapter = new DateAdapter(this, getResources(), currentYear,
+                    currentMonth, currentWeek, weeksOfMonth, selectPostion,
+                    currentWeek == 1 ? true : false);
+            dayNumbers = dateAdapter.getDayNumbers();
+            gridView.setAdapter(dateAdapter);
+            calDate.setText(dateAdapter.getCurrentYear(selectPostion) + "年"
+                    + dateAdapter.getCurrentMonth(selectPostion) + "月"
+                    + dayNumbers[selectPostion] + "日");
+            gvFlag++;
+            topFlipper.addView(gridView, gvFlag);
+            dateAdapter.setSeclection(selectPostion);
+            this.topFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
+                    R.anim.push_left_in));
+            this.topFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+                    R.anim.push_left_out));
+            this.topFlipper.showNext();
+            topFlipper.removeViewAt(0);
+            return true;
+
+        } else if (e1.getX() - e2.getX() < -80) {
+            addGridView();
+            currentWeek--;
+            getCurrent();
+            dateAdapter = new DateAdapter(this, getResources(), currentYear,
+                    currentMonth, currentWeek, weeksOfMonth , selectPostion,
+                    currentWeek == 1 ? true : false);
+            dayNumbers = dateAdapter.getDayNumbers();
+            gridView.setAdapter(dateAdapter);
+            calDate.setText(dateAdapter.getCurrentYear(selectPostion) + "年"
+                    + dateAdapter.getCurrentMonth(selectPostion) + "月"
+                    + dayNumbers[selectPostion] + "日");
+            gvFlag++;
+            topFlipper.addView(gridView, gvFlag);
+            dateAdapter.setSeclection(selectPostion);
+            this.topFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
+                    R.anim.push_right_in));
+            this.topFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+                    R.anim.push_right_out));
+            this.topFlipper.showPrevious();
+            topFlipper.removeViewAt(0);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -551,121 +596,8 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                           float velocityY) {
-        int gvFlag = 0;
-        if (e1.getX() - e2.getX() > 80) {
-            // 向左滑
-            addGridView();
-            currentWeek++;
-            getCurrent();
-            dateAdapter = new DateAdapter(this, getResources(), currentYear,
-                    currentMonth, currentWeek, weeksOfMonth, selectPostion,
-                    currentWeek == 1 ? true : false);
-            dayNumbers = dateAdapter.getDayNumbers();
-            gridView.setAdapter(dateAdapter);
-            tvDate.setText(dateAdapter.getCurrentYear(selectPostion) + "年"
-                    + dateAdapter.getCurrentMonth(selectPostion) + "月"
-                    + dayNumbers[selectPostion] + "日");
-            gvFlag++;
-            topFlipper.addView(gridView, gvFlag);
-            dateAdapter.setSeclection(selectPostion);
-            this.topFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
-                    R.anim.push_left_in));
-            this.topFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-                    R.anim.push_left_out));
-            this.topFlipper.showNext();
-            topFlipper.removeViewAt(0);
-            return true;
-
-        } else if (e1.getX() - e2.getX() < -80) {
-            addGridView();
-            currentWeek--;
-            getCurrent();
-            dateAdapter = new DateAdapter(this, getResources(), currentYear,
-                    currentMonth, currentWeek, weeksOfMonth , selectPostion,
-                    currentWeek == 1 ? true : false);
-            dayNumbers = dateAdapter.getDayNumbers();
-            gridView.setAdapter(dateAdapter);
-            tvDate.setText(dateAdapter.getCurrentYear(selectPostion) + "年"
-                    + dateAdapter.getCurrentMonth(selectPostion) + "月"
-                    + dayNumbers[selectPostion] + "日");
-            gvFlag++;
-            topFlipper.addView(gridView, gvFlag);
-            dateAdapter.setSeclection(selectPostion);
-            this.topFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
-                    R.anim.push_right_in));
-            this.topFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-                    R.anim.push_right_out));
-            this.topFlipper.showPrevious();
-            topFlipper.removeViewAt(0);
-            return true;
-            // }
-        }
-        return false;
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         return this.gestureDetector.onTouchEvent(event);
     }
-
-
-    /**
-     * 判断某年某月所有的星期数
-     *
-     * @param year
-     * @param month
-     */
-    /*public int getWeeksOfMonth(int year, int month) {
-        // 先判断某月的第一天为星期几
-        int preMonthRelax = 0;
-        int dayFirst = sc.getWeekdayOfMonth(year, month);
-        int days = sc.getDaysOfMonth(sc.isLeapYear(year), month);
-        if (dayFirst != 7) {
-            preMonthRelax = dayFirst;
-        }
-        if ((days + preMonthRelax) % 7 == 0) {
-            weeksOfMonth = (days + preMonthRelax) / 7;
-        } else {
-            weeksOfMonth = (days + preMonthRelax) / 7 + 1;
-        }
-        return weeksOfMonth;
-    }*/
-
-    //构造函数 Change & Del 初始化时间
-    /*public CalAddScheduleView() {
-
-
-        *//*Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
-        currentDate = sdf.format(date);
-        year_c = Integer.parseInt(currentDate.split("-")[0]);
-        month_c = Integer.parseInt(currentDate.split("-")[1]);
-        day_c = Integer.parseInt(currentDate.split("-")[2]);*//*
-        *//*currentYear = year_c;
-        currentMonth = month_c;
-        currentDay = day_c;*//*
-
-
-        getCalendar(currentYear, currentMonth);
-        weeksOfMonth = getWeeksOfMonth();
-
-        if (dayOfWeek == 7) {
-            currentWeek = currentDay / 7 + 1;
-        } else {
-            if (currentDay <= (7 - dayOfWeek)) {
-                currentWeek = 1;
-            } else {
-                if ((currentDay - (7 - dayOfWeek)) % 7 == 0) {
-                    currentWeek = (currentDay - (7 - dayOfWeek)) / 7 + 1;
-                } else {
-                    currentWeek = (currentDay - (7 - dayOfWeek)) / 7 + 2;
-                }
-            }
-        }
-        //currentWeek = week_c;
-    }*/
-
 
 }

@@ -33,7 +33,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/calSchGotoButton">
+            android:layout_below="@id/calSchGotoButton">
 
             <TextView
                 android:layout_width="0dp"
@@ -109,22 +109,9 @@
         android:gravity="center"
         />
 
-    <!--<TextView
-        android:id="@+id/editScheduleTop"
-        android:layout_below="@id/calSchdate"
-        android:gravity="center"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/cal_top_day"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:textColor="#000000"
-        android:text="编辑日程"
-        />-->
-
     <TextView
         android:id="@+id/calScheduleType"
-        android:layout_below="@+id/calSchdate"
+        android:layout_below="@id/calSchdate"
         android:gravity="center_vertical"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
@@ -133,12 +120,13 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:drawableRight="@drawable/cal_schedule_type"
-        android:textColor="#000000"
+        android:textColor="@color/black"
+        android:background="@color/white"
         android:clickable="true"
         />
     <TextView
         android:id="@+id/calScheduleDate"
-        android:layout_below="@+id/calScheduleType"
+        android:layout_below="@id/calScheduleType"
         android:gravity="center_vertical"
         android:layout_width="fill_parent"
         android:layout_height="43dp"
@@ -146,25 +134,27 @@
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColor="#000000"
+        android:textColor="@color/black"
+        android:background="@color/white"
         android:clickable="true"
         />
     <EditText
         android:id="@+id/calScheduleText"
-        android:layout_below="@+id/calScheduleDate"
+        android:layout_below="@id/calScheduleDate"
         android:gravity="top"
         android:layout_width="fill_parent"
         android:layout_height="240dp"
-        android:background="@null"
+
         android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColor="#000000"
+        android:textColor="@color/black"
+        android:background="@color/white"
         android:hint="请输入你的日程..."
         />
     <TextView
         android:id="@+id/save"
-        android:layout_below="@+id/calScheduleText"
+        android:layout_below="@id/calScheduleText"
         android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
@@ -172,7 +162,7 @@
         android:textStyle="bold"
         android:clickable="true"
         android:layout_marginTop="5dp"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:text="保存"
         />
 
