@@ -1,27 +1,24 @@
 package com.android.oneday.activity.MainPageActivity;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
 import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
-import com.android.oneday.activity.CalendarActivity.CalendarView;
+import com.android.oneday.activity.ScheduleActivity.ScheduleInfoView;
 import com.android.oneday.adapter.SortAdapter;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
@@ -35,7 +32,7 @@ import java.util.Date;
  * Created by Feng on 3/3/2016.
  * TODO Start coding.
  */
-public class SchedulePageActivity extends BaseActivity {
+public class SchedulePageActivity extends BaseActivity implements OnItemLongClickListener{
 
     private ScrollView sv = null;
     private LinearLayout layout = null;
@@ -72,7 +69,7 @@ public class SchedulePageActivity extends BaseActivity {
         Toast.makeText(this, currentDate.toString(), Toast.LENGTH_LONG).show();
         schList = model.getScheduleByDate(currentDate);
         //schList = model.getAllSchedule();
-//        Toast.makeText(this, schList.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, schList.toString(), Toast.LENGTH_SHORT).show();
         if(schList != null) {
             adapter = new SortAdapter(this, schList);
             schListView.setAdapter(adapter);
@@ -86,11 +83,13 @@ public class SchedulePageActivity extends BaseActivity {
     private void initView() {
         this.Schdate = (TextView) super.findViewById(R.id.schdate);
         this.schListView = (ListView) super.findViewById(R.id.schListView);
+        this.schListView.setOnItemLongClickListener(this);
         year_c = Integer.parseInt(currentDate.split("-")[0]);
         month_c = Integer.parseInt(currentDate.split("-")[1]);
         day_c = Integer.parseInt(currentDate.split("-")[2]);
         this.Schdate.setText(year_c + "年" + month_c + "月" + day_c + "日");
     }
+
 
     /**
      * 得到所有的日程信息
@@ -116,28 +115,30 @@ public class SchedulePageActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        menu.add(1, menu.FIRST, menu.FIRST, "返回日历");
-        menu.add(1, menu.FIRST+1, menu.FIRST+1, "添加日程");
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId()){
-            case Menu.FIRST:
-                Intent intent = new Intent();
-                intent.setClass(SchedulePageActivity.this, CalendarView.class);
-                startActivity(intent);
-                break;
-            case Menu.FIRST+1:
-                Intent intent1 = new Intent();
-                intent1.setClass(SchedulePageActivity.this, CalAddScheduleView.class);
-                startActivity(intent1);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("CallLogActivity", view.toString() + "position=" + position);
+        final int scheduleID = schList.get(position).getScheduleID();
+        String dd = schList.get(position).getScheduleContent();
+        new AlertDialog.Builder(this).setTitle("更改日程")
+                .setMessage("是否对日程进行编辑")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setClass(SchedulePageActivity.this, CalAddScheduleView.class);
+                        //intent.putStringArrayListExtra("scheduleDate", currentDate);
+                        intent.putExtra("scheduleID", scheduleID);
+                        startActivity(intent);
+                        finish();
+                        //model.delete(scheduleID);
+                    }
+                })
+                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("hahah","ok");
+                    }
+                }).show();
+        return true;
     }
 }

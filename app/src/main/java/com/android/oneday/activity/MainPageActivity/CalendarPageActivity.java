@@ -1,11 +1,14 @@
 package com.android.oneday.activity.MainPageActivity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -13,11 +16,14 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -41,6 +47,7 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
     private CalendarView calView = null;
     private GridView gridView = null;
     private Drawable draw = null;
+    private ImageView imageView = null;
 
     private static int jumpMonth = 0;      //每次滑动，增加或减去一个月,默认为0（即显示当前月）
     private static int jumpYear = 0;       //滑动跨越一年，则增加或者减去一年,默认为0(即当前年)
@@ -65,11 +72,57 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
         gestureDetector = new GestureDetector(this);
         flipper = (ViewFlipper) findViewById(R.id.calFlipper);
         flipper.removeAllViews();
+        imageView = (ImageView) findViewById(R.id.calGotoButton);
         calView = new CalendarView(this, getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
 
         addGridView();
         gridView.setAdapter(calView);
         flipper.addView(gridView, 0);
+        imageView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                new DatePickerDialog(CalendarPageActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        //1901-1-1 ----> 2049-12-31
+                        if(year < 1901 || year > 2049){
+                            //不在查询范围内
+                            new AlertDialog.Builder(CalendarPageActivity.this).setTitle("错误日期").setMessage("跳转日期范围(1901/1/1-2049/12/31)").setPositiveButton("确认", null).show();
+                        }else{
+                            int gvFlag = 0;
+                            addGridView();   //添加一个gridView
+                            calView = new CalendarView(CalendarPageActivity.this, CalendarPageActivity.this.getResources(), year, monthOfYear+1, dayOfMonth);
+                            gridView.setAdapter(calView);
+                            gvFlag++;
+                            flipper.addView(gridView,gvFlag);
+                            if(year == year_c && monthOfYear+1 == month_c){
+                                //nothing to do
+                                Log.i("hahaha", "hahaha");
+                            }
+                            if((year == year_c && monthOfYear+1 > month_c) || year > year_c ){
+                                CalendarPageActivity.this.flipper.setInAnimation(AnimationUtils.loadAnimation(CalendarPageActivity.this,R.anim.push_up_in));
+                                CalendarPageActivity.this.flipper.setOutAnimation(AnimationUtils.loadAnimation(CalendarPageActivity.this,R.anim.push_up_out));
+                                CalendarPageActivity.this.flipper.showNext();
+                            }else{
+                                CalendarPageActivity.this.flipper.setInAnimation(AnimationUtils.loadAnimation(CalendarPageActivity.this,R.anim.push_down_in));
+                                CalendarPageActivity.this.flipper.setOutAnimation(AnimationUtils.loadAnimation(CalendarPageActivity.this,R.anim.push_down_out));
+                                CalendarPageActivity.this.flipper.showPrevious();
+                            }
+                            flipper.removeViewAt(0);
+                            //跳转之后将跳转之后的日期设置为当期日期
+                            year_c = year;
+                            month_c = monthOfYear+1;
+                            day_c = dayOfMonth;
+                            jumpMonth = 0;
+                            jumpYear = 0;
+                        }
+                    }
+                },year_c, month_c-1, day_c).show();
+            }
+        });
     }
 
     @Override
@@ -146,12 +199,10 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                     long arg3) {
-                //点击任何一个item，得到这个item的日期(排除点击的是周日到周六(点击不响应))
                 int startPosition = calView.getStartPositon();
                 int endPosition = calView.getEndPosition();
                 if (startPosition <= position && position <= endPosition) {
                     String scheduleDay = calView.getDateByClickItem(position).split("\\.")[0];  //这一天的阳历
-                    //String scheduleLunarDay = calView.getDateByClickItem(position).split("\\.")[1];  //这一天的阴历
                     String scheduleYear = calView.getShowYear();
                     String scheduleMonth = calView.getShowMonth();
                     String week = "";
@@ -186,7 +237,6 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
                     scheduleDate.add(scheduleMonth);
                     scheduleDate.add(scheduleDay);
                     scheduleDate.add(week);
-                    //scheduleDate.add(scheduleLunarDay);
 
                     Intent intent = new Intent();
                     intent.putStringArrayListExtra("scheduleDate", scheduleDate);

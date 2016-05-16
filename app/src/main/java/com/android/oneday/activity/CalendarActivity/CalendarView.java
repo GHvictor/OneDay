@@ -45,6 +45,7 @@ public class CalendarView extends BaseAdapter {
 	private String currentYear = "";
 	private String currentMonth = "";
 	private String currentDay = "";
+    private boolean flag = false;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
 	private int currentFlag = -1;         //用于标记当天
@@ -76,6 +77,7 @@ public class CalendarView extends BaseAdapter {
 		sc = new SpecialCalendar();
 		lc = new LunarCalendar();
 		this.res = rs;
+        flag = false;
 
         int stepYear = year_c + jumpYear;
 		int stepMonth = month_c + jumpMonth ;
@@ -112,6 +114,7 @@ public class CalendarView extends BaseAdapter {
 		sc = new SpecialCalendar();
 		lc = new LunarCalendar();
 		this.res = rs;
+        flag = true;
 		currentYear = String.valueOf(year);    //得到跳转到的年份
 		currentMonth = String.valueOf(month);  //得到跳转到的月份
 		currentDay = String.valueOf(day);      //得到跳转到的天
@@ -198,17 +201,25 @@ public class CalendarView extends BaseAdapter {
 		for (int i = 0; i < dayNumber.length; i++) {
 			if(i < dayOfWeek+7){  //前一个月
 				int temp = lastDaysOfMonth - dayOfWeek+1-7;
-				lunarDay = lc.getLunarDate(year, month-1, temp+i,false);
+				lunarDay = lc.getLunarDate(year, month-1, temp+i, false);
 				dayNumber[i] = (temp + i)+"."+lunarDay;
-			}else if(i < daysOfMonth + dayOfWeek+7){   //本月
-				String day = String.valueOf(i-dayOfWeek+1-7);   //得到的日期
-				lunarDay = lc.getLunarDate(year, month, i-dayOfWeek+1-7,false);
+			}else if(i < daysOfMonth + dayOfWeek + 7){   //本月
+				String day = String.valueOf(i - dayOfWeek + 1 - 7);   //得到的日期
+				lunarDay = lc.getLunarDate(year, month, i-dayOfWeek+1-7, false);
 				dayNumber[i] = i-dayOfWeek+1-7+"."+lunarDay;
 				//对于当前月才去标记当前日期
-				if(sys_year.equals(String.valueOf(year)) && sys_month.equals(String.valueOf(month)) && sys_day.equals(day)){
-					//笔记当前日期
-					currentFlag = i;
-				}
+				//标记当前日期
+				if(flag){
+                    //跳转指定日期逻辑
+                    if(currentYear.equals(String.valueOf(year)) && currentMonth.equals(String.valueOf(month)) && currentDay.equals(day) ){
+                        currentFlag = i;
+                    }
+				}else{
+                    //正常渲染模式
+                    if(sys_year.equals(String.valueOf(year)) && sys_month.equals(String.valueOf(month)) && sys_day.equals(day) ){
+                        currentFlag = i;
+                    }
+                }
 
 				setShowYear(String.valueOf(year));
 				setShowMonth(String.valueOf(month));

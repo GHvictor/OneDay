@@ -95,11 +95,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*year_c = Integer.parseInt(scheduleYear);
-        month_c = Integer.parseInt(scheduleMonth);
-        day_c = Integer.parseInt(scheduleDay);*/
-        //weeksOfMonth = getWeeksOfMonth();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal_add_schedule_view);
 
