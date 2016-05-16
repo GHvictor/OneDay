@@ -195,7 +195,7 @@ public class ScheduleModel {
 			int scheduleID = cursor.getInt(cursor.getColumnIndex("scheduleID"));
 			ScheduleDateTag dateTag = new ScheduleDateTag(tagID,year,month,day,scheduleID);
 			dateTagList.add(dateTag);
-			}
+		}
 		cursor.close();
 		if(dateTagList != null && dateTagList.size() > 0){
 			return dateTagList;

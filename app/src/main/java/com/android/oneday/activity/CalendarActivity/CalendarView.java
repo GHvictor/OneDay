@@ -2,6 +2,7 @@ package com.android.oneday.activity.CalendarActivity;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.Context;
@@ -21,8 +22,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.oneday.R;
+import com.android.oneday.db.ScheduleModel;
 import com.android.oneday.util.LunarCalendar;
 import com.android.oneday.util.SpecialCalendar;
+import com.android.oneday.vo.ScheduleDateTag;
 
 /**
  * Created by Feng on 3/3/2016.
@@ -34,6 +37,7 @@ public class CalendarView extends BaseAdapter {
 	private int daysOfMonth = 0;         //某月的天数
 	private int dayOfWeek = 0;           //具体某一天是星期几
 	private int lastDaysOfMonth = 0;     //上一个月的总天数
+    private ScheduleModel model = null;
 	private Context context;
 	private String[] dayNumber = new String[49];  //一个gridview中的日期存入此数组中
 	//private static String week[] = {"日","一","二","三","四","五","六"};
@@ -41,7 +45,7 @@ public class CalendarView extends BaseAdapter {
 	private LunarCalendar lc = null;
 	private Resources res = null;
 	private Drawable drawable = null;
-	
+
 	private String currentYear = "";
 	private String currentMonth = "";
 	private String currentDay = "";
@@ -154,17 +158,17 @@ public class CalendarView extends BaseAdapter {
 		sp.setSpan(new StyleSpan(Typeface.BOLD), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		sp.setSpan(new RelativeSizeSpan(1.2f) , 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		if(dv != null || dv != ""){
-            sp.setSpan(new RelativeSizeSpan(0.75f), d.length()+1, dayNumber[position].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sp.setSpan(new RelativeSizeSpan(0.75f), d.length() + 1, dayNumber[position].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		textView.setText(sp);
 		textView.setTextColor(Color.GRAY);
 		
-		if (position < daysOfMonth + dayOfWeek+7 && position >= dayOfWeek+7) {
+		if (position < daysOfMonth + dayOfWeek + 7 && position >= dayOfWeek + 7) {
 			// 当前月信息显示
 			textView.setTextColor(Color.BLACK);// 当月字体设黑
 			drawable = res.getDrawable(R.drawable.cal_item);
 		}
-		if(schDateTagFlag != null && schDateTagFlag.length >0){
+		if(schDateTagFlag != null && schDateTagFlag.length > 0){
 			for(int i = 0; i < schDateTagFlag.length; i++){
 				if(schDateTagFlag[i] == position){
                     //设置日程标记背景
@@ -195,18 +199,24 @@ public class CalendarView extends BaseAdapter {
 	//将一个月中的每一天的值添加入数组dayNuber中
 	private void getweek(int year, int month) {
 		int j = 1;
-		//int flag = 0;
+		int mark = 0;
 		String lunarDay = "";
 
+        model = new ScheduleModel(context);
+		ArrayList<ScheduleDateTag> dateTagList = model.getTagDate(year, month);
+        //Log.i(dateTagList.toString(), "111");
+		if(dateTagList != null && dateTagList.size() > 0){
+			schDateTagFlag = new int[dateTagList.size()];
+		}
 		for (int i = 0; i < dayNumber.length; i++) {
-			if(i < dayOfWeek+7){  //前一个月
-				int temp = lastDaysOfMonth - dayOfWeek+1-7;
-				lunarDay = lc.getLunarDate(year, month-1, temp+i, false);
+			if(i < dayOfWeek + 7){  //前一个月
+				int temp = lastDaysOfMonth - dayOfWeek + 1 - 7;
+				lunarDay = lc.getLunarDate(year, month - 1, temp + i, false);
 				dayNumber[i] = (temp + i)+"."+lunarDay;
 			}else if(i < daysOfMonth + dayOfWeek + 7){   //本月
 				String day = String.valueOf(i - dayOfWeek + 1 - 7);   //得到的日期
-				lunarDay = lc.getLunarDate(year, month, i-dayOfWeek+1-7, false);
-				dayNumber[i] = i-dayOfWeek+1-7+"."+lunarDay;
+				lunarDay = lc.getLunarDate(year, month, i - dayOfWeek + 1 - 7, false);
+				dayNumber[i] = i - dayOfWeek + 1 - 7+"."+lunarDay;
 				//对于当前月才去标记当前日期
 				//标记当前日期
 				if(flag){
@@ -220,7 +230,19 @@ public class CalendarView extends BaseAdapter {
                         currentFlag = i;
                     }
                 }
-
+				//标记日程日期
+				if(dateTagList != null && dateTagList.size() > 0){
+					for(int m = 0; m < dateTagList.size(); m++){
+						ScheduleDateTag dateTag = dateTagList.get(m);
+						int matchYear = dateTag.getYear();
+						int matchMonth = dateTag.getMonth();
+						int matchDay = dateTag.getDay();
+						if(matchYear == year && matchMonth == month && matchDay == Integer.parseInt(day)){
+							schDateTagFlag[mark] = i;
+                            mark++;
+						}
+					}
+				}
 				setShowYear(String.valueOf(year));
 				setShowMonth(String.valueOf(month));
 				setAnimalsYear(lc.animalsYear(year));
