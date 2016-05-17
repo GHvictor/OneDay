@@ -82,7 +82,6 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
 
             @Override
             public void onClick(View v) {
-
                 new DatePickerDialog(CalendarPageActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear,

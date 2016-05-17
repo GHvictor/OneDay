@@ -13,6 +13,14 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/app_set"
+            android:src="@drawable/app_set"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/calGotoButton"
             android:src="@drawable/cal_goto_button"
             android:layout_alignParentTop="true"

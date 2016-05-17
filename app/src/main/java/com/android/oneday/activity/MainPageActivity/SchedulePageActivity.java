@@ -2,12 +2,16 @@ package com.android.oneday.activity.MainPageActivity;
 
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -18,7 +22,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
 import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
-import com.android.oneday.activity.ScheduleActivity.ScheduleInfoView;
+import com.android.oneday.activity.SettingActivity.SettingPageActivity;
 import com.android.oneday.adapter.SortAdapter;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
@@ -40,7 +44,9 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
     private ScheduleVO scheduleVO = null;
     private SortAdapter adapter;
     private ArrayList<ScheduleVO> schList = new ArrayList<ScheduleVO>();
-    private TextView Schdate = null;
+    private TextView schDate = null;
+    private ImageView appSet = null;
+    private ImageView gotoSch = null;
     private String scheduleInfo = "";
     private String currentDate = "";
     private int year_c = 0;
@@ -62,32 +68,80 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
 
         initView();
         initData();
+        chooseSch();
+
     }
 
     private void initData() {
 
         Toast.makeText(this, currentDate.toString(), Toast.LENGTH_LONG).show();
         schList = model.getScheduleByDate(currentDate);
-        //schList = model.getAllSchedule();
-        //Toast.makeText(this, schList.toString(), Toast.LENGTH_SHORT).show();
+
         if(schList != null) {
             adapter = new SortAdapter(this, schList);
             schListView.setAdapter(adapter);
         }
         else {
-            Toast.makeText(this, "hahah", Toast.LENGTH_SHORT).show();
+            schList = new ArrayList<ScheduleVO>();
+            adapter = new SortAdapter(this, schList);
+            adapter.notifyDataSetChanged();
+            schListView.setAdapter(adapter);
+            Toast.makeText(this, "还没有记录啊", Toast.LENGTH_SHORT).show();
             Log.v("hhahah", "hahhahah");
         }
     }
 
     private void initView() {
-        this.Schdate = (TextView) super.findViewById(R.id.schdate);
+        this.schDate = (TextView) super.findViewById(R.id.schdate);
         this.schListView = (ListView) super.findViewById(R.id.schListView);
         this.schListView.setOnItemLongClickListener(this);
+        this.appSet = (ImageView) findViewById(R.id.app_set);
+        this.gotoSch = (ImageView) findViewById(R.id.calSchGotoButton);
         year_c = Integer.parseInt(currentDate.split("-")[0]);
         month_c = Integer.parseInt(currentDate.split("-")[1]);
         day_c = Integer.parseInt(currentDate.split("-")[2]);
-        this.Schdate.setText(year_c + "年" + month_c + "月" + day_c + "日");
+        this.schDate.setText(year_c + "年" + month_c + "月" + day_c + "日");
+    }
+
+    private void chooseSch() {
+        gotoSch.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(SchedulePageActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        //1901-1-1 ----> 2049-12-31
+                        if (year < 1901 || year > 2049) {
+                            //不在查询范围内
+                            new AlertDialog.Builder(SchedulePageActivity.this).setTitle("错误日期").setMessage("跳转日期范围(1901/1/1-2049/12/31)").setPositiveButton("确认", null).show();
+                        } else {
+
+                            //跳转之后将跳转之后的日期设置为当期日期
+                            year_c = year;
+                            month_c = monthOfYear + 1;
+                            day_c = dayOfMonth;
+                            currentDate = Integer.toString(year_c) + "-" + Integer.toString(month_c) + "-" + Integer.toString(day_c);
+                            initData();
+                            schDate.setText(year_c + "年" + month_c + "月" + day_c + "日");
+                        }
+                    }
+                }, year_c, month_c - 1, day_c).show();
+            }
+        });
+    }
+
+    private void chooseSet(){
+        appSet.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SchedulePageActivity.this, SettingPageActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 
@@ -140,5 +194,11 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
                     }
                 }).show();
         return true;
+    }
+    private void refresh() {
+        /*finish();
+        Intent intent = new Intent(RefreshActivityTest.this, RefreshActivityTest.class);
+        startActivity(intent);*/
+        onCreate(null);
     }
 }
