@@ -17,6 +17,7 @@ import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
 import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
 import com.android.oneday.constant.ScheduleConstant;
+import com.android.oneday.util.SysApp;
 
 /**
  * Created by dell on 3/17/2016.
@@ -39,6 +40,7 @@ public class ScheduleTypeView extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SysApp.getInstance().addActivity(this);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 

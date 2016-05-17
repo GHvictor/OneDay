@@ -18,9 +18,9 @@ import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
 import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
 import com.android.oneday.activity.MainPageActivity.MainPageActivity;
-import com.android.oneday.activity.MainPageActivity.SchedulePageActivity;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
+import com.android.oneday.util.SysApp;
 import com.android.oneday.vo.ScheduleVO;
 
 /**
@@ -47,6 +47,7 @@ public class ScheduleInfoView extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        SysApp.getInstance().addActivity(this);
 
         model = new ScheduleModel(this);
         btSave = new TextView(this, null);

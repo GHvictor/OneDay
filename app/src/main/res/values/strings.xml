@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OneDay</string>
+    <string name="title_activity_setting_page">SettingPageActivity</string>
 </resources>

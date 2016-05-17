@@ -62,14 +62,6 @@
                 android:src="@drawable/menu_calendar"
                 android:layout_gravity="center_horizontal" />
 
-            <!--<TextView
-                android:id="@+id/calendarText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="日历"
-                android:textColor="@color/text_hint"
-                android:layout_gravity="center_horizontal" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -88,14 +80,6 @@
                 android:src="@drawable/menu_schedule"
                 android:layout_gravity="center_horizontal" />
 
-            <!--<TextView
-                android:id="@+id/scheduleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="日程"
-                android:textColor="@color/text_hint"
-                android:layout_gravity="center_horizontal" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -114,16 +98,7 @@
                 android:src="@drawable/menu_weather"
                 android:layout_gravity="center_horizontal" />
 
-            <!--<TextView
-                android:id="@+id/weatherText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="服务"
-                android:textColor="@color/text_hint"
-                android:layout_gravity="center_horizontal" />-->
         </LinearLayout>
 
     </LinearLayout>
-
 </RelativeLayout>

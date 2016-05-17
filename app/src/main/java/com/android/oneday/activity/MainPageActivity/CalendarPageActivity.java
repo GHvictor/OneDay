@@ -32,6 +32,8 @@ import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
 import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
 import com.android.oneday.activity.CalendarActivity.CalendarView;
+import com.android.oneday.activity.SettingActivity.SettingPageActivity;
+import com.android.oneday.util.SysApp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
     private CalendarView calView = null;
     private GridView gridView = null;
     private Drawable draw = null;
+    private ImageView appSet = null;
     private ImageView imageView = null;
 
     private static int jumpMonth = 0;      //每次滑动，增加或减去一个月,默认为0（即显示当前月）
@@ -69,15 +72,37 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_page);
-        gestureDetector = new GestureDetector(this);
-        flipper = (ViewFlipper) findViewById(R.id.calFlipper);
-        flipper.removeAllViews();
-        imageView = (ImageView) findViewById(R.id.calGotoButton);
-        calView = new CalendarView(this, getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
-
+        SysApp.getInstance().addActivity(this);
+        initView();
         addGridView();
         gridView.setAdapter(calView);
         flipper.addView(gridView, 0);
+        chooseSet();
+        chooseCal();
+
+    }
+
+    private void initView(){
+        gestureDetector = new GestureDetector(this);
+        flipper = (ViewFlipper) findViewById(R.id.calFlipper);
+        flipper.removeAllViews();
+        appSet = (ImageView) findViewById(R.id.app_set);
+        imageView = (ImageView) findViewById(R.id.calGotoButton);
+        calView = new CalendarView(this, getResources(), jumpMonth, jumpYear, year_c, month_c, day_c);
+    }
+
+    private void chooseSet(){
+        appSet.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(CalendarPageActivity.this, SettingPageActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void chooseCal(){
         imageView.setOnClickListener(new OnClickListener() {
 
             @Override

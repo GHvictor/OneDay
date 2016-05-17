@@ -34,6 +34,7 @@ import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
 import com.android.oneday.util.LunarCalendar;
 import com.android.oneday.util.SpecialCalendar;
+import com.android.oneday.util.SysApp;
 import com.android.oneday.vo.ScheduleDateTag;
 import com.android.oneday.vo.ScheduleVO;
 
@@ -60,11 +61,6 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private LunarCalendar lc = null;
     private ScheduleModel model = null;
 
-    /*private int year_c = 0;
-    private int month_c = 0;
-    private int day_c = 0;
-    private int week_c = 0;
-    private int week_num = 0;*/
     private static ArrayList<String> scheduleDate = null;
     private ArrayList<ScheduleDateTag> dateTagList = new ArrayList<ScheduleDateTag>();
     private int daysOfMonth = 0; // 某月的天数
@@ -77,16 +73,13 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private int currentMonth = 0;
     private int currentWeek = 0;
     private int currentDay = 0;
-    //private int currentNum = 0;
     private static int hour = -1;
     private static int minute = -1;
     private String scheduleYear = "";
     private String scheduleMonth = "";
     private String scheduleDay = "";
     private String week = "";
-    //临时日期时间变量，
-    /*private String tempMonth;
-    private String tempDay;*/
+
     private static String[] sch_type = ScheduleConstant.sch_type;
     private static String[] remind = ScheduleConstant.remind;
     private int sch_typeID = 0;   //日程类型
@@ -97,6 +90,7 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal_add_schedule_view);
+        SysApp.getInstance().addActivity(this);
 
         initView();
         Date date = new Date();

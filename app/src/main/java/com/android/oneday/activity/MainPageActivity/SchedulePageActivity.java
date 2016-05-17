@@ -26,6 +26,7 @@ import com.android.oneday.activity.SettingActivity.SettingPageActivity;
 import com.android.oneday.adapter.SortAdapter;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
+import com.android.oneday.util.SysApp;
 import com.android.oneday.vo.ScheduleVO;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +62,7 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_schedule_page);
+        SysApp.getInstance().addActivity(this);
         model = new ScheduleModel(this);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
@@ -68,8 +70,8 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
 
         initView();
         initData();
+        chooseSet();
         chooseSch();
-
     }
 
     private void initData() {
@@ -139,7 +141,6 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
                 Intent intent = new Intent();
                 intent.setClass(SchedulePageActivity.this, SettingPageActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -194,11 +195,5 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
                     }
                 }).show();
         return true;
-    }
-    private void refresh() {
-        /*finish();
-        Intent intent = new Intent(RefreshActivityTest.this, RefreshActivityTest.class);
-        startActivity(intent);*/
-        onCreate(null);
     }
 }

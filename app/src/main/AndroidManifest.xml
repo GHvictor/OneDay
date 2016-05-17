@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".activity.ScheduleActivity.ScheduleInfoView" >
         </activity>
+        <activity android:name=".activity.SettingActivity.SettingPageActivity" >
+        </activity>
     </application>
 
 </manifest>

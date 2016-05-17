@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.oneday.R;
 import com.android.oneday.activity.Base.BaseActivity;
+import com.android.oneday.util.SysApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        SysApp.getInstance().addActivity(this);
         initData(savedInstanceState);
         initView();
         initViewPage();
