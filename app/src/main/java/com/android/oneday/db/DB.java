@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
  */
 public class DB extends SQLiteOpenHelper{
 
+    private static final String DATABASE_NAME = "oneday.db";
     private final static int VERSION = 1;
 
     public DB(Context context, String name, CursorFactory factory,
@@ -18,14 +19,15 @@ public class DB extends SQLiteOpenHelper{
         // TODO Auto-generated constructor stub
     }
 
-    public DB(Context context, String name){
-        this(context, name, null,VERSION);
+    public DB(Context context){
+        this(context, DATABASE_NAME, null,VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS schedule(scheduleID integer primary key autoincrement,scheduleTypeID integer,remindID integer,scheduleContent text,scheduleDate text)");
         db.execSQL("CREATE TABLE IF NOT EXISTS scheduletagdate(tagID integer primary key autoincrement,year integer,month integer,day integer,scheduleID integer)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS pwdtable(passwordType integer primary key,password text)");
     }
 
     @Override
@@ -33,6 +35,7 @@ public class DB extends SQLiteOpenHelper{
 
         db.execSQL("DROP TABLE IF EXISTS schedule");
         db.execSQL("DROP TABLE IF EXISTS scheduletagdate");
+        db.execSQL("DROP TABLE IF EXISTS pwdtable");
         onCreate(db);
     }
 }

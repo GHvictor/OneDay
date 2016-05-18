@@ -20,6 +20,7 @@ import com.android.oneday.activity.CalendarActivity.CalAddScheduleView;
 import com.android.oneday.activity.MainPageActivity.MainPageActivity;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
+import com.android.oneday.db.TagDateModel;
 import com.android.oneday.util.SysApp;
 import com.android.oneday.vo.ScheduleVO;
 
@@ -36,7 +37,8 @@ public class ScheduleInfoView extends BaseActivity {
     private LinearLayout layButton;
     private TextView btSave = null;
     private TextView btCancel = null;
-    private ScheduleModel model = null;
+    private ScheduleModel schModel = null;
+    private TagDateModel tagModel = null;
     private ScheduleVO scheduleVO = null;
 
     private String scheduleInfo = "";    //日程信息被修改前的内容
@@ -47,9 +49,9 @@ public class ScheduleInfoView extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        SysApp.getInstance().addActivity(this);
 
-        model = new ScheduleModel(this);
+        schModel = new ScheduleModel(this);
+        tagModel = new TagDateModel(this);
         btSave = new TextView(this, null);
         btCancel = new TextView(this, null);
 
@@ -199,7 +201,7 @@ public class ScheduleInfoView extends BaseActivity {
         layout.addView(info);
 		/*Intent intent = getIntent();
 		int scheduleID = Integer.parseInt(intent.getStringExtra("scheduleID"));*/
-        scheduleVO = model.getScheduleByID(scheduleID);
+        scheduleVO = schModel.getScheduleByID(scheduleID);
         date.setText(scheduleVO.getScheduleDate());
         type.setText(ScheduleConstant.sch_type[scheduleVO.getScheduleTypeID()]);
         info.setText(scheduleVO.getScheduleContent());
@@ -217,7 +219,8 @@ public class ScheduleInfoView extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        model.delete(Integer.parseInt(scheduleID));
+                        schModel.delete(Integer.parseInt(scheduleID));
+                        tagModel.delete(Integer.parseInt(scheduleID));
                         Intent intentToMain = new Intent();
                         intentToMain.setClass(ScheduleInfoView.this, MainPageActivity.class);
                         startActivity(intentToMain);

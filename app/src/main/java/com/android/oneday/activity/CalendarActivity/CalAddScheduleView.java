@@ -32,6 +32,7 @@ import com.android.oneday.activity.ScheduleActivity.ScheduleTypeView;
 import com.android.oneday.adapter.DateAdapter;
 import com.android.oneday.constant.ScheduleConstant;
 import com.android.oneday.db.ScheduleModel;
+import com.android.oneday.db.TagDateModel;
 import com.android.oneday.util.LunarCalendar;
 import com.android.oneday.util.SpecialCalendar;
 import com.android.oneday.util.SysApp;
@@ -59,7 +60,8 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     private SpecialCalendar sc = null;
     private DateAdapter dateAdapter;
     private LunarCalendar lc = null;
-    private ScheduleModel model = null;
+    private ScheduleModel schModel = null;
+    private TagDateModel tagModel = null;
 
     private static ArrayList<String> scheduleDate = null;
     private ArrayList<ScheduleDateTag> dateTagList = new ArrayList<ScheduleDateTag>();
@@ -90,11 +92,11 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal_add_schedule_view);
-        SysApp.getInstance().addActivity(this);
 
         initView();
         Date date = new Date();
-        model = new ScheduleModel(this);
+        schModel = new ScheduleModel(this);
+        tagModel = new TagDateModel(this);
         lc = new LunarCalendar();
         sc = new SpecialCalendar();
         getScheduleDate();
@@ -193,7 +195,8 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
                     schedulevo.setScheduleDate(showDate);
                     schedulevo.setScheduleContent(scheduleText.getText().toString());
                     //model.save(schedulevo);
-                    int scheduleID = model.save(schedulevo);
+                    int scheduleID = schModel.save(schedulevo);
+                    schModel.destoryDB();
                     //将scheduleID保存到数据中(因为在CalendarActivity中点击gridView中的一个Item可能会对应多个标记日程(scheduleID))
                     String[] scheduleIDs = new String[]{String.valueOf(scheduleID)};
                     Intent intent = new Intent();
@@ -290,7 +293,8 @@ public class CalAddScheduleView extends BaseActivity implements OnGestureListene
             }
         }
         //将标记日期存入数据库中
-        model.saveTagDate(dateTagList);
+        tagModel.saveTagDate(dateTagList);
+        tagModel.destoryDB();
     }
 
     /**

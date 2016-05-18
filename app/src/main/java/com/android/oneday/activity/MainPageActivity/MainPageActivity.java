@@ -39,7 +39,6 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        SysApp.getInstance().addActivity(this);
         initData(savedInstanceState);
         initView();
         initViewPage();

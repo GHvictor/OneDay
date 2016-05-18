@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.android.oneday.R;
 import com.android.oneday.db.ScheduleModel;
+import com.android.oneday.db.TagDateModel;
 import com.android.oneday.util.LunarCalendar;
 import com.android.oneday.util.SpecialCalendar;
 import com.android.oneday.vo.ScheduleDateTag;
@@ -37,7 +38,7 @@ public class CalendarView extends BaseAdapter {
 	private int daysOfMonth = 0;         //某月的天数
 	private int dayOfWeek = 0;           //具体某一天是星期几
 	private int lastDaysOfMonth = 0;     //上一个月的总天数
-    private ScheduleModel model = null;
+	private TagDateModel tagModel = null;
 	private Context context;
 	private String[] dayNumber = new String[49];  //一个gridview中的日期存入此数组中
 	//private static String week[] = {"日","一","二","三","四","五","六"};
@@ -202,8 +203,9 @@ public class CalendarView extends BaseAdapter {
 		int mark = 0;
 		String lunarDay = "";
 
-        model = new ScheduleModel(context);
-		ArrayList<ScheduleDateTag> dateTagList = model.getTagDate(year, month);
+        tagModel = new TagDateModel(context);
+		ArrayList<ScheduleDateTag> dateTagList = tagModel.getTagDate(year, month);
+        tagModel.destoryDB();
         //Log.i(dateTagList.toString(), "111");
 		if(dateTagList != null && dateTagList.size() > 0){
 			schDateTagFlag = new int[dateTagList.size()];

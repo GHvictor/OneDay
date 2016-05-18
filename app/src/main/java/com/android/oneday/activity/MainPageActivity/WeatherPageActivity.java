@@ -16,6 +16,5 @@ public class WeatherPageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_page);
-        SysApp.getInstance().addActivity(this);
     }
 }

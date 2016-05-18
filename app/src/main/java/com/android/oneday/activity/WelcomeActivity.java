@@ -1,5 +1,6 @@
 package com.android.oneday.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
@@ -12,13 +13,12 @@ import com.android.oneday.util.SysApp;
 /**
  * Created by Feng on 3/3/2016.
  */
-public class WelcomeActivity extends BaseActivity {
+public class WelcomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        SysApp.getInstance().addActivity(this);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {

@@ -72,7 +72,6 @@ public class CalendarPageActivity extends BaseActivity implements OnGestureListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_page);
-        SysApp.getInstance().addActivity(this);
         initView();
         addGridView();
         gridView.setAdapter(calView);

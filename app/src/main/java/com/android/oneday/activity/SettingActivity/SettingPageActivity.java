@@ -1,6 +1,9 @@
 package com.android.oneday.activity.SettingActivity;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +14,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.android.oneday.activity.Base.BaseActivity;
+import com.android.oneday.activity.PasswordActivity.EasyPwdActivity;
+import com.android.oneday.activity.PasswordActivity.SudokuActivity;
 import com.android.oneday.constant.SettingConstant;
 
 import com.android.oneday.R;
@@ -34,7 +41,6 @@ public class SettingPageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_page);
-        SysApp.getInstance().addActivity(this);
         initView();
         initData();
         chooseReturn();
@@ -66,6 +72,32 @@ public class SettingPageActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SettingPageActivity.this);
+                        builder.setTitle("选择密码方式");
+                        //    指定下拉列表的显示数据
+                        final String[] pwdList = SettingConstant.pwd_list;
+
+                        //    设置一个下拉的列表选择项
+                        builder.setItems(pwdList, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                Intent intent = new Intent();
+                                switch (which){
+                                    case 0:
+                                        intent.setClass(SettingPageActivity.this, EasyPwdActivity.class);
+                                        break;
+                                    case 1:
+                                        intent.setClass(SettingPageActivity.this, SudokuActivity.class);
+                                        break;
+                                }
+                                startActivity(intent);
+                                finish();
+                                Toast.makeText(SettingPageActivity.this, "选择密码方式：" , Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        builder.show();
                         break;
                     case 1:
                         SysApp.getInstance().exit();

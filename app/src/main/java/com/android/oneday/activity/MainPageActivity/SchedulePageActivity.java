@@ -41,7 +41,7 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
 
     private ScrollView sv = null;
     private LinearLayout layout = null;
-    private ScheduleModel model = null;
+    private ScheduleModel schModel = null;
     private ScheduleVO scheduleVO = null;
     private SortAdapter adapter;
     private ArrayList<ScheduleVO> schList = new ArrayList<ScheduleVO>();
@@ -62,8 +62,7 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_schedule_page);
-        SysApp.getInstance().addActivity(this);
-        model = new ScheduleModel(this);
+        schModel = new ScheduleModel(this);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
         currentDate = sdf.format(date);
@@ -77,7 +76,7 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
     private void initData() {
 
         Toast.makeText(this, currentDate.toString(), Toast.LENGTH_LONG).show();
-        schList = model.getScheduleByDate(currentDate);
+        schList = schModel.getScheduleByDate(currentDate);
 
         if(schList != null) {
             adapter = new SortAdapter(this, schList);
@@ -150,7 +149,7 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
      * 得到所有的日程信息
      */
     public void getScheduleAll(){
-        schList = model.getAllSchedule();
+        schList = schModel.getAllSchedule();
         if(schList != null){
             for (ScheduleVO vo : schList) {
                 String content = vo.getScheduleContent();

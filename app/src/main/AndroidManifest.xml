@@ -3,6 +3,7 @@
     package="com.android.oneday" >
 
     <application
+        android:name=".activity.Base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,6 +34,12 @@
         <activity android:name=".activity.ScheduleActivity.ScheduleInfoView" >
         </activity>
         <activity android:name=".activity.SettingActivity.SettingPageActivity" >
+        </activity>
+        <activity android:name=".activity.PasswordActivity.EasyPwdActivity" >
+        </activity>
+        <activity android:name=".activity.SettingActivity.SettingPwdActivity" >
+        </activity>
+        <activity android:name=".activity.PasswordActivity.SudokuActivity" >
         </activity>
     </application>
 

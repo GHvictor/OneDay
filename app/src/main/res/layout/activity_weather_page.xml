@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:background="@color/tab"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/calSchTopTab">
+        android:id="@+id/weatherTopTab">
 
         <ImageView
             android:layout_width="wrap_content"
