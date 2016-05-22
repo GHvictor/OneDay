@@ -161,7 +161,6 @@ public class LunarCalendar {
 	 * @return
 	 */
 	public String getLunarDate(int year_log, int month_log, int day_log, boolean isday) {
-		// @SuppressWarnings("unused")
 		int yearCyl, monCyl, dayCyl;
 		//int leapMonth = 0;
 		String nowadays;

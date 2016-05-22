@@ -81,11 +81,11 @@ public class EasyPwdActivity extends Activity {
 
                     password = easyPwd.getText().toString();
                     password = MD5(password);
-                    boolean isPwd = pwdModel.checkPwd(0, password);
+                    boolean isPwd = pwdModel.checkPwd(1, password);
                     if (password != null && isPwd) {
                         Toast.makeText(EasyPwdActivity.this, "密码正确！", Toast.LENGTH_SHORT).show();
                         application.isLocked = false;
-                        EasyPwdActivity.this.finish();
+                        finish();
                     } else {
                         Toast.makeText(EasyPwdActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
                         easyPwd.setText("");
@@ -98,7 +98,7 @@ public class EasyPwdActivity extends Activity {
                 public void onClick(View v) {
                     if (passwordBool && rePawBool){
                         password = MD5(password);
-                        pwdModel.savePwd(0, password);
+                        pwdModel.savePwd(1, password);
                         pwdModel.destoryDB();
                         Intent intent = new Intent();
                         intent.setClass(EasyPwdActivity.this, MainPageActivity.class);

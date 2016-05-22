@@ -100,6 +100,11 @@ public class SettingPageActivity extends BaseActivity {
                         builder.show();
                         break;
                     case 1:
+                        Intent intent = new Intent();
+                        intent.setClass(SettingPageActivity.this,SettingCityActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
                         SysApp.getInstance().exit();
                         break;
                 }

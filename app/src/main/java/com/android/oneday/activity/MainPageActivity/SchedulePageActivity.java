@@ -88,7 +88,6 @@ public class SchedulePageActivity extends BaseActivity implements OnItemLongClic
             adapter.notifyDataSetChanged();
             schListView.setAdapter(adapter);
             Toast.makeText(this, "还没有记录啊", Toast.LENGTH_SHORT).show();
-            Log.v("hhahah", "hahhahah");
         }
     }
 

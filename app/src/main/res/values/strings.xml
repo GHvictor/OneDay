@@ -3,4 +3,21 @@
     <string name="title_activity_setting_page">SettingPageActivity</string>
     <string name="password_input">请输入密码</string>
     <string name="re_password_input">请再次输入密码</string>
+
+    <string name="auto_add">自动选择</string>
+    <string name="locale_city">定位当前城市</string>
+    <string name="head_add">手动选择</string>
+
+    <string name="filter_hint">输入城市名称</string>
+
+    <string name="set_city">设置城市</string>
+
+    <string name="change_city">设置城市</string>
+    <string name="update_weather">更新天气</string>
+    <string name="wallpaper">壁纸</string>
+
+    <string name="wallpaper_text01">青色小路</string>
+    <string name="wallpaper_text02">夕日晚霞</string>
+    <string name="wallpaper_text03">深色海洋</string>
+    <string name="wallpaper_text04">魔幻古堡</string>
 </resources>

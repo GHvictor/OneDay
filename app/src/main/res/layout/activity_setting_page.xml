@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/setReturnButton"
-            android:src="@drawable/cal_return_button"
+            android:src="@drawable/return_button"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true" />
     </RelativeLayout>

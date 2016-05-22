@@ -15,7 +15,6 @@ public class MyApplication extends Application{
 
     public boolean isLocked = false;
     public int lockType = 0;
-    public String password = "1";
 
     LockScreenReceiver receiver ;
     IntentFilter filter ;
