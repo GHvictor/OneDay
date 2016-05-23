@@ -94,8 +94,6 @@ public class MainPageActivity extends BaseActivity implements OnPageChangeListen
         this.pager.setCurrentItem(1);
         this.pager.addOnPageChangeListener(this);
         this.textTab.setText("日 程");
-        //this.text2.setTextColor(getResources().getColor(R.color.text_checked));
-        //this.image2.setImageDrawable(getResources().getDrawable(R.drawable.contacts_press));
     }
 
     public void PageOnClick(View view) {

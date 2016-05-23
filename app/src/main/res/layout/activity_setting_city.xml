@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tab"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/cityTopTab">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/setReturnButton"
+            android:src="@drawable/return_button"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置城市"
+            android:id="@+id/cityTextTopTab"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/text_hint"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_below="@id/cityTopTab"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:text="@string/auto_add" />
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gps_view" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:text="@string/head_add" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <!-- 显示所有支持的的省份与城市的列表框 -->
+        <ExpandableListView
+            android:id="@+id/provinceList"
+            android:drawSelectorOnTop="false"
+            android:textColor="@color/black"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/filterField" />
+
+        <!-- 快捷查找城市的过滤框 -->
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/filterField"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:singleLine="true"
+            android:hint="@string/filter_hint" />
+    </RelativeLayout>
+
+</LinearLayout>
