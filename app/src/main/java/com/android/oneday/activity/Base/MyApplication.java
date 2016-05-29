@@ -49,7 +49,9 @@ public class MyApplication extends Application{
         public void onReceive(Context context, Intent intent) {
 			/* 在这里处理广播 */
             if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-                isLocked  = true;
+                if (lockType != 0) {
+                    isLocked = true;
+                }
             }
         }
     }

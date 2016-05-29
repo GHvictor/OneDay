@@ -253,6 +253,7 @@ public class WeatherPageActivity extends BaseActivity {
                 //==========================解析JSON得到天气===========================
                 JSONObject json = new JSONObject(info);
                 JSONObject weatherJson = json.getJSONArray("HeWeather data service 3.0").getJSONObject(0);
+                JSONObject nowJson = weatherJson.getJSONObject("now");
                 JSONObject todayJson = weatherJson.getJSONArray("daily_forecast").getJSONObject(0);
                 JSONObject tomorrowJson = weatherJson.getJSONArray("daily_forecast").getJSONObject(1);
                 JSONObject afterTowJson = weatherJson.getJSONArray("daily_forecast").getJSONObject(2);
@@ -281,7 +282,8 @@ public class WeatherPageActivity extends BaseActivity {
                 tempText.setText(info);
                 editor.putString("temp1", info);
                 //得到天气
-                info = todayJson.getJSONObject("cond").getString("txt_d");
+                //info = todayJson.getJSONObject("cond").getString("txt_d");
+                info = nowJson.getJSONObject("cond").getString("txt");
                 tempText = (TextView) findViewById(R.id.currentWeather);
                 tempText.setText(info);
                 editor.putString("weather1", info);

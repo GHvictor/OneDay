@@ -100,6 +100,7 @@ public class EasyPwdActivity extends Activity {
                         password = MD5(password);
                         pwdModel.savePwd(1, password);
                         pwdModel.destoryDB();
+                        application.lockType = 1;
                         Intent intent = new Intent();
                         intent.setClass(EasyPwdActivity.this, MainPageActivity.class);
                         startActivity(intent);
